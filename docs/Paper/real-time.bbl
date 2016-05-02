@@ -1,20 +1,23 @@
 \begin{thebibliography}{}
 
-\bibitem[Boulic and Renault 1991]{boulic:91}
-Boulic, R. and Renault, O. (1991).
-\newblock 3d hierarchies for animation.
-\newblock In Magnenat-Thalmann, N. and Thalmann, D., editors, {\em New Trends
-  in Animation and Visualization}. John Wiley {\&} Sons ltd.
+\bibitem[Ayeni 2012]{ayeni2012real}
+Ayeni, B.~K. (2012).
+\newblock Real-time embedded system.
 
-\bibitem[Knuth 1984]{knuth:84}
-Knuth, D.~E. (1984).
-\newblock {\em The {\TeX} Book}.
-\newblock Addison-Wesley, 15th edition.
+\bibitem[Kopetz 2011]{kopetz2011real}
+Kopetz, H. (2011).
+\newblock {\em Real-time systems: design principles for distributed embedded
+  applications}.
+\newblock Springer Science \& Business Media.
 
-\bibitem[Smith and Jones 1999]{smith:99}
-Smith, A. and Jones, B. (1999).
-\newblock On the complexity of computing.
-\newblock In Smith-Jones, A.~B., editor, {\em Advances in Computer Science},
-  pages 555--566. Publishing Press.
+\bibitem[Stankovic 1996]{stankovic1996real}
+Stankovic, J.~A. (1996).
+\newblock Real-time and embedded systems.
+\newblock {\em ACM Computing Surveys (CSUR)}, 28(1):205--208.
+
+\bibitem[Stankovic and Ramamritham 1990]{stankovic1990predictability}
+Stankovic, J.~A. and Ramamritham, K. (1990).
+\newblock What is predictability for real-time systems?
+\newblock {\em Real-Time Systems}, 2(4):247--254.
 
 \end{thebibliography}
