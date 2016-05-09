@@ -40,50 +40,68 @@
 
 It's important to understand what is time and it's related concepts. For this purpose, the definitions provided by
 \cite{kopetz2011real} will be considered: 
-1) The flow of time is a directed time line that extends from the past into the future.
-2) A cut of the time line is called an instant.
-3) Any ideal occurrence that happens at an instant is called an event. 
-4) The present point in time, now, is a very special event that separates the past from the future.
-5) An interval on the time line, called a duration, is defined by two events, the start event and the 
+\begin{enumerate}
+ \item The flow of time is a directed time line that extends from the past into the future.
+ \item A cut of the time line is called an instant.
+ \item Any ideal occurrence that happens at an instant is called an event.
+ \item The present point in time, now, is a very special event that separates the past from the future.
+ \item An interval on the time line, called a duration, is defined by two events, the start event and the 
 terminating event of the interval.
-6) The instant when a result must be produced is called a deadline.
+ \item The instant when a result must be produced is called a deadline.
+\end{enumerate}
+
+In the context of deadlines, \cite{kopetz2011real} also provides a good definition, classifying them in 
+three different ways:
+\begin{enumerate}
+ \item Soft deadline: If a result has utility even after the deadline has passed,
+ \item Firm deadline: If a result does not matter after the deadline.
+ \item Hard deadline: If severe consequences could result if a firm deadline is missed.
+\end{enumerate}
 
 \subsection{Real-time systems}
 
-A real-time computer system is a computer system where the correctness 
+% For \cite{kopetz2011real}, a real-time computer system is a computer system where the correctness 
+% of the system behavior depends not only on the logical results of the computations, but also on 
+% the physical time when these results are produced. \cite{ayeni2012real} completes this definition stating
+% that correctness of a system refers to the behaviour of the system over time.
+
+For \cite{kopetz2011real}, a real-time computer system is a computer system where the correctness 
 of the system behavior depends not only on the logical results of the computations, but also on 
-the physical time when these results are produced \cite{kopetz2011real}. 
+the physical time when these results are produced. \cite{lichtenstein1985glory} states that a real-time system 
+is a reactive system, that is, it must react to stimuli from its environment within time intervals dictated by 
+its environment. Also, \cite{stankovic1990predictability} classifies real-time computer system in 2 ways:
+\begin{enumerate}
+ \item Static real-time system: where all deadlines can be guaranteed a priori.
+ \item Dynamic real-time system: large, complex, distributed, adaptive, contain many types of timing constraints, 
+need to operate in a highly nondeterministic environment, and evolves over a long system lifetime.
+\end{enumerate}
 
-The correctness of a system, according to a definition provided by \cite{ayeni2012real}, refers 
-to the behaviour of the system over time.
+The type of the deadline affects the real-time system. If the system must met at least
+one hard deadline, it's called a hard real-time computer system.  If no hard deadline exists, 
+then the system is called a soft real-time computer system. The design of a hard real-time system is 
+fundamentally different from the design of a soft real-time system. While the first must sustain a guaranteed 
+temporal behavior under all specified load and fault conditions, it is permissible for the second to miss a 
+deadline occasionally \cite{kopetz2011real}. \cite{stankovic1996real} also points that hard real-time systems 
+usually cause several consequences, even death, when missed an important deadline.
 
-According to \cite{stankovic1990predictability}, real-time systems can be classified in 2 different ways:
-1) Static real-time system: where all deadlines can be guaranteed a priori.
-2) Dynamic real-time system: large, complex, distributed, adaptive, contain many types of timing constraints, 
-need to operate in a highly nondeterministic environment, and evolves over a long system lifetime. 
- 
-A real-time computer system must react to stimuli from its environment within time intervals dictated 
-by its environment.
+\subsection{Tasks}
 
-%A Reactive system is characterized by a continuous interaction with their environment. They typically 
-%continuously receive inputs from their environment and, usually within quite a short delay, react 
-%on these inputs. \cite{lichtenstein1985glory}
+For \cite{stankovic1996real} tasks can be classified as:
 
-Hard real-time systems are those in which missing an important deadline can cause severe 
-consequences, even death.
-
-A periodic task is one that is activated every T units. The deadline for each activated instance
-may be less than, equal to, or greater than the period T.
-
-An aperiodic task is activated at unpredictable times.
-
-A sporadic task is an aperiodic task with the additional constraint that there is a minimum 
-interarrival time between task activations.
+\begin{enumerate}
+  \item Periodic task: activated every T units. The deadline for each activated instance may be less than, equal to, 
+or greater than the period T.
+  \item Aperiodic task: activated at unpredictable times.
+  \item Sporadic task: an aperiodic task with the additional constraint that there is a minimum interarrival time 
+between task activations.
+\end{enumerate}
 
 Real-time scheduling is the process of creating start and finish times for sets of tasks such that
 all timing, precedence, and resource constraints are met.
 
-Rate monotonic algorithm assigns the highest priority to the most frequent periodic task. \cite{stankovic1996real}
+%Rate monotonic algorithm assigns the highest priority to the most frequent periodic task. \cite{stankovic1996real}
+
+\iffalse
 
 Predictability of the system means that it should be possible to show, demonstrate, or prove that requirements are
 met subject to any assumptions made, for example, concerning failures and workloads. In other words, 
@@ -113,20 +131,6 @@ A computation of a real-time system can be viewed as a sequence of event occurre
 events represent things that happen in a system. An event occurrence defines a point in time in a
 computation at which a particular instance of an event happens. \cite{chodrow1991run}
 
-
-
-If a result has utility even after the deadline has passed, the deadline is classified as soft, 
-otherwise it is firm. If severe consequences could result if a firm deadline is missed, the deadline
-is called hard.
-
-A real-time computer system that must meet at least one hard deadline is called a hard real-time 
-computer system. If no har deadline exists, then the system is called a soft real-time computer system.
-
-The design of a hard real-time system is fundamentally different from the design of a soft real-time 
-system. While a hard real-time computer system must sustain a guaranteed temporal behavior under all 
-specified load and fault conditions, it is permissible for a soft real-time computer system to miss a 
-deadline occasionally.
-
 The reliability of a system is the probability that a system will provide the specified service until time t.
 The probability that a system will fail in a given interval of time is expressed by the failure rate, 
 measured in FIT's (Failure In Time). A failure rate of 1 FIT means that the mean time to a failure (MTTF) 
@@ -134,6 +138,7 @@ of a device is 10\^9 h, i.e., one failure occurs in about 115,000 years.
 If a system has a constat failure rate of (lambda) failures/h, then the reliability at time t is giben by:
 R(t) = exp(-lambda(t - t0)). \cite{kopetz2011real}
 
+\fi
 \section{Proposal}
 
 \section{Experiments and Evaluation}

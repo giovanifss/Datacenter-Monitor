@@ -50,51 +50,44 @@ terminating event of the interval.
  \item The instant when a result must be produced is called a deadline.
 \end{enumerate}
 
-\subsection{Real-time systems}
-
-A real-time computer system is a computer system where the correctness 
-of the system behavior depends not only on the logical results of the computations, but also on 
-the physical time when these results are produced \cite{kopetz2011real}. 
-
-The correctness of a system, according to a definition provided by \cite{ayeni2012real}, refers 
-to the behaviour of the system over time.
-
-Real-time systems can be classified in 2 different ways \cite{stankovic1990predictability}:
-\begin{enumerate}
- \item Static real-time system: where all deadlines can be guaranteed a priori.
- \item Dynamic real-time system: large, complex, distributed, adaptive, contain many types of timing constraints, 
-need to operate in a highly nondeterministic environment, and evolves over a long system lifetime.
-\end{enumerate}
-
-A real-time computer system must react to stimuli from its environment within time intervals dictated 
-by its environment.
-
-%A Reactive system is characterized by a continuous interaction with their environment. They typically 
-%continuously receive inputs from their environment and, usually within quite a short delay, react 
-%on these inputs. \cite{lichtenstein1985glory}
-
-The type of the deadline affects the real-time system. \cite{kopetz2011real} classifies deadline as:
+In the context of deadlines, \cite{kopetz2011real} also provides a good definition, classifying them in 
+three different ways:
 \begin{enumerate}
  \item Soft deadline: If a result has utility even after the deadline has passed,
  \item Firm deadline: If a result does not matter after the deadline.
  \item Hard deadline: If severe consequences could result if a firm deadline is missed.
 \end{enumerate}
 
-A real-time system is affected by the type of the deadline. If the system must met at least
+\subsection{Real-time systems}
+
+% For \cite{kopetz2011real}, a real-time computer system is a computer system where the correctness 
+% of the system behavior depends not only on the logical results of the computations, but also on 
+% the physical time when these results are produced. \cite{ayeni2012real} completes this definition stating
+% that correctness of a system refers to the behaviour of the system over time.
+
+For \cite{kopetz2011real}, a real-time computer system is a computer system where the correctness 
+of the system behavior depends not only on the logical results of the computations, but also on 
+the physical time when these results are produced. \cite{lichtenstein1985glory} states that a real-time system 
+is a reactive system, that is, it must react to stimuli from its environment within time intervals dictated by 
+its environment. According to \cite{stankovic1990predictability}, a real-time computer system can be classified 
+in 2 different ways:
+\begin{enumerate}
+ \item Static real-time system: where all deadlines can be guaranteed a priori.
+ \item Dynamic real-time system: large, complex, distributed, adaptive, contain many types of timing constraints, 
+need to operate in a highly nondeterministic environment, and evolves over a long system lifetime.
+\end{enumerate}
+
+The type of the deadline affects the real-time system. If the system must met at least
 one hard deadline, it's called a hard real-time computer system.  If no hard deadline exists, 
-then the system is called a soft real-time computer system.
-
-The design of a hard real-time system is fundamentally different from the design of a soft real-time 
-system. While a hard real-time computer system must sustain a guaranteed temporal behavior under all 
-specified load and fault conditions, it is permissible for a soft real-time computer system to miss a 
-deadline occasionally \cite{kopetz2011real}.
-
-\cite{stankovic1996real} also points that hard real-time systems usually cause several consequences, even death, when
-missed an important deadline
+then the system is called a soft real-time computer system. The design of a hard real-time system is 
+fundamentally different from the design of a soft real-time system. While the first must sustain a guaranteed 
+temporal behavior under all specified load and fault conditions, it is permissible for the second to miss a 
+deadline occasionally \cite{kopetz2011real}. \cite{stankovic1996real} also points that hard real-time systems 
+usually cause several consequences, even death, when missed an important deadline.
 
 \subsection{Tasks}
 
-For \cite{stankovic1996real} tasks can be classified in three different ways:
+For \cite{stankovic1996real} tasks can be classified as:
 
 \begin{enumerate}
   \item Periodic task: activated every T units. The deadline for each activated instance may be less than, equal to, 

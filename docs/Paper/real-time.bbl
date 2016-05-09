@@ -1,14 +1,15 @@
 \begin{thebibliography}{}
 
-\bibitem[Ayeni 2012]{ayeni2012real}
-Ayeni, B.~K. (2012).
-\newblock Real-time embedded system.
-
 \bibitem[Kopetz 2011]{kopetz2011real}
 Kopetz, H. (2011).
 \newblock {\em Real-time systems: design principles for distributed embedded
   applications}.
 \newblock Springer Science \& Business Media.
+
+\bibitem[Lichtenstein et~al. 1985]{lichtenstein1985glory}
+Lichtenstein, O., Pnueli, A., and Zuck, L. (1985).
+\newblock {\em The glory of the past}.
+\newblock Springer.
 
 \bibitem[Stankovic 1996]{stankovic1996real}
 Stankovic, J.~A. (1996).
