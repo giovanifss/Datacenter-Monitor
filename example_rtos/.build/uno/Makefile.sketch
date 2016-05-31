@@ -1,0 +1,14 @@
+
+
+
+
+
+.build/uno/src/Blink_AnalogRead.cpp : src/Blink_AnalogRead.ino
+	@mkdir -p .build/uno/src
+	@echo [93msrc/Blink_AnalogRead.ino[0m
+	@/usr/bin/ino preproc  -o $@ $^
+
+
+all : .build/uno/src/Blink_AnalogRead.cpp
+	@true
+

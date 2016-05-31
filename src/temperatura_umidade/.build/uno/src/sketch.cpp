@@ -3,10 +3,19 @@
 void setup();
 void loop();
 #line 1 "src/sketch.ino"
+/*
+ * Program to read temperature and humidity from DHT sensor
+ *
+ * Configuration:
+ *  5V  => First pin sensor
+ *  GND => Last pin sensor
+ *  AX  => Second pin sensor
+ */
+
 //#include<DHT.h>
 
-/* Pin - Sensor Model */
-DHT dht(A1,DHT11);
+/* dht(Pin, Sensor Model) */
+DHT dht(A1, DHT11);
 
 void setup()
 {
