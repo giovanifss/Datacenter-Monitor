@@ -1,0 +1,14 @@
+
+
+
+
+
+.build/uno/src/FreeRTOS-Sketch.cpp : src/FreeRTOS-Sketch.ino
+	@mkdir -p .build/uno/src
+	@echo [93msrc/FreeRTOS-Sketch.ino[0m
+	@/usr/bin/ino preproc  -o $@ $^
+
+
+all : .build/uno/src/FreeRTOS-Sketch.cpp
+	@true
+
