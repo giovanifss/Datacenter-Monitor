@@ -189,6 +189,19 @@ for Rate Monotonic Scheduler is:
 
 \[ \displaystyle U = \sum_{i=1}^{n}\frac{C_i}{P_i} \leq n(2^\frac{1}{n} - 1) \]
 
+Where \(U\) is the CPU utilization, \(C_i\) is the computation time of the task \(i\), \(P_i\) is the release period (with deadline one period after),
+and \(n\) is the number of processes to be scheduled.
+
+\iffalse
+Enumerate pros elementos da equacao
+\begin{enumerate}
+  \item \(U\).
+  \item Aperiodic task: activated at unpredictable times.
+  \item Sporadic task: an aperiodic task with the additional constraint that there is a minimum interarrival time 
+between task activations.
+\end{enumerate}
+\fi
+
 The set of tasks for RTDMS was mathematically proved as scalable:
 
 [Contas de escalonabilidade das tasks do RTDMS]
