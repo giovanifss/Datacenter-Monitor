@@ -3,44 +3,44 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: real-time.aux
 The style file: sbc.bst
 Database file #1: real-time.bib
-You've used 4 entries,
+You've used 5 entries,
             1935 wiz_defined-function locations,
-            494 strings with 4164 characters,
-and the built_in function-call counts, 1404 in all, are:
-= -- 135
-> -- 45
-< -- 3
-+ -- 16
-- -- 14
-* -- 112
-:= -- 251
-add.period$ -- 12
-call.type$ -- 4
-change.case$ -- 25
-chr.to.int$ -- 4
-cite$ -- 4
-duplicate$ -- 56
-empty$ -- 107
-format.name$ -- 20
-if$ -- 270
+            501 strings with 4329 characters,
+and the built_in function-call counts, 1790 in all, are:
+= -- 175
+> -- 58
+< -- 4
++ -- 20
+- -- 18
+* -- 147
+:= -- 317
+add.period$ -- 15
+call.type$ -- 5
+change.case$ -- 32
+chr.to.int$ -- 5
+cite$ -- 5
+duplicate$ -- 70
+empty$ -- 135
+format.name$ -- 27
+if$ -- 345
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 6
-newline$ -- 23
-num.names$ -- 12
-pop$ -- 26
+missing$ -- 7
+newline$ -- 28
+num.names$ -- 15
+pop$ -- 30
 preamble$ -- 1
-purify$ -- 27
+purify$ -- 34
 quote$ -- 0
-skip$ -- 42
+skip$ -- 53
 stack$ -- 0
-substring$ -- 100
-swap$ -- 4
+substring$ -- 131
+swap$ -- 5
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 20
+type$ -- 26
 warning$ -- 0
-while$ -- 12
+while$ -- 16
 width$ -- 0
-write$ -- 52
+write$ -- 65

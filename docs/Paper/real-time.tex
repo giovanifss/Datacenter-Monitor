@@ -155,7 +155,45 @@ If a system has a constat failure rate of (lambda) failures/h, then the reliabil
 R(t) = exp(-lambda(t - t0)). \cite{kopetz2011real}
 
 \fi
-\section{Proposal}
+
+\section{The RTDMS}
+
+The RTDMS, that stands for Real Time Datacenter Monitor System, is a real time system aiming
+to provide a reliable and solid way to measure and monitor the conditions of a datacenter. Using
+sensors for temperature, humidity and flood, the RTDMS is able to quickly discover adverse conditions
+in a datacenter and reduce the warning time, so the support team have more time to take the
+appropriate interventions and avoid worse situations.
+
+\subsection{Tasks Model}
+The RTDMS have the following tasks model:
+
+[Tabela com as tasks]
+
+Comentarios sobre cada task especifica.
+
+\subsubsection{Time Restrictions}
+
+The RTDMS time restriction is the warning time. In the moment that RTDMS detects an adverse condition,
+the alarm task must be execute instantly. The failure of this task, not warning or warning with delay,
+can cause big problems to the owners of the datacenter, including the loss of all data and equipments.
+
+\subsubsection{Scalability}
+
+The problem of schedule periodic tasks with hard deadlines equal to the task periods is not trivial,
+being studied in literature since \cite{liu1973scheduling}, that appoints the rate monotonic, that
+assigns a higher priority to a task with shorter period, as an optimal fixed priority algorithm.
+
+To calculate if a set of tasks is scalable in Rate Monotonic, it's used the following equation:
+
+[Equacao do Rate Monotonic]
+
+The set of tasks for RTDMS was mathematically proved as scalable:
+
+[Contas de escalonabilidade das tasks do RTDMS]
+
+This set of tasks were submitted to simulation in XXXX(nome da ferramenta) and was proved as scalable:
+
+[Imagem da ferramenta mostrando que eh escalonavel]
 
 \section{Experiments and Evaluation}
 

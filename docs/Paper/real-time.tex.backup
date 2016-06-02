@@ -34,6 +34,21 @@
 
 \section{Introduction}
 
+Nowadays, most business operations are supported by IT systems. Therefore, their availability is critical to keep
+business running smoothly and continuously. In order to provide high quality IT services, a well-managed data center
+is required to house computer servers, storage systems,network devices, and their associated components. Downtime
+of the data center can be costly resulting in production and business losses so that the high availability requirement of the
+data center is needed.
+Data center always requires a non-stopped service or 24x7 availability. The availability of data center mainly requires the
+protection of computer equipment and personnel. There are some potential hazards which may occur and impact the
+availability of data center. Fire is the most potential hazard which can create severe effects on data center. Fire can occur
+in a data center by mechanical failure, intentional arson, or natural causes.
+Data Center Physical Security Ontology for Automated Evaluation (Abstract).
+
+Data Center is a facility used for housing a large amount of computer and communications equipment maintained by an
+organization for the purpose of handling the data necessary for its operations.
+Glossary of MMC Terminology. Available: http://msdn.microsoft.com/en-us/library/bb246417(VS.85).aspx.
+
 \section{Related Concepts}
 
 \subsection{Time}
@@ -69,7 +84,8 @@ For \cite{kopetz2011real}, a real-time computer system is a computer system wher
 of the system behavior depends not only on the logical results of the computations, but also on 
 the physical time when these results are produced. \cite{lichtenstein1985glory} states that a real-time system 
 is a reactive system, that is, it must react to stimuli from its environment within time intervals dictated by 
-its environment. Also, \cite{stankovic1990predictability} classifies real-time computer system in 2 ways:
+its environment. According to \cite{stankovic1990predictability}, a real-time computer system can be classified 
+in 2 different ways:
 \begin{enumerate}
  \item Static real-time system: where all deadlines can be guaranteed a priori.
  \item Dynamic real-time system: large, complex, distributed, adaptive, contain many types of timing constraints, 
@@ -139,7 +155,45 @@ If a system has a constat failure rate of (lambda) failures/h, then the reliabil
 R(t) = exp(-lambda(t - t0)). \cite{kopetz2011real}
 
 \fi
-\section{Proposal}
+
+\section{The RTDMS}
+
+The RTDMS, that stands for Real Time Datacenter Monitor System, is a real time system aiming
+to provide a reliable and solid way to measure and monitor the conditions of a datacenter. Using
+sensors for temperature, humidity and flood, the RTDMS is able to quickly discover adverse conditions
+in a datacenter and reduce the warning time, so the support team have more time to take the
+appropriate interventions and avoid worse situations.
+
+\subsection{Tasks Model}
+The RTDMS have the following tasks model:
+
+[Tabela com as tasks]
+
+Comentarios sobre cada task especifica.
+
+\subsubsection{Time Restrictions}
+
+The RTDMS time restriction is the warning time. In the moment that RTDMS detects an adverse condition,
+the alarm task must be execute instantly. The failure of this task, not warning or warning with delay,
+can cause big problems to the owners of the datacenter, including the loss of all data and equipments.
+
+\subsubsection{Scalability}
+
+The problem of schedule periodic tasks with hard deadlines equal to the task periods is not trivial,
+being studied in literature since \cite{liu1973scheduling}, that appoints the rate monotonic algorithm
+as 
+
+Assure that a deadline will not be missed is not a trivial problem. It's a topic of widely study in
+literature, having the first 
+
+its necessary to calculate the
+scalability and run simulations. 
+
+The subset of tasks proposed is scalable through the Rate Monotonic algorithm. 
+
+[Imagens da ferramenta mostrando que eh escalonavel]
+
+Comentarios
 
 \section{Experiments and Evaluation}
 

@@ -11,6 +11,12 @@ Lichtenstein, O., Pnueli, A., and Zuck, L. (1985).
 \newblock {\em The glory of the past}.
 \newblock Springer.
 
+\bibitem[Liu and Layland 1973]{liu1973scheduling}
+Liu, C.~L. and Layland, J.~W. (1973).
+\newblock Scheduling algorithms for multiprogramming in a hard-real-time
+  environment.
+\newblock {\em Journal of the ACM (JACM)}, 20(1):46--61.
+
 \bibitem[Stankovic 1996]{stankovic1996real}
 Stankovic, J.~A. (1996).
 \newblock Real-time and embedded systems.
