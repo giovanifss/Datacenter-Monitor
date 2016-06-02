@@ -9,6 +9,8 @@
 \usepackage[utf8]{inputenc}  
 % UTF-8 encoding is recommended by ShareLaTex
 
+\usepackage{amsmath}
+
      
 \sloppy
 
@@ -179,13 +181,13 @@ can cause big problems to the owners of the datacenter, including the loss of al
 
 \subsubsection{Scalability}
 
-The problem of schedule periodic tasks with hard deadlines equal to the task periods is not trivial,
-being studied in literature since \cite{liu1973scheduling}, that appoints the rate monotonic, which
-assigns a higher priority to a task with shorter period, as an optimal fixed priority algorithm.
+The rate monotonic, which assigns a higher priority to a task with shorter period, was considered an
+optimal fixed priority algorithm by \cite{liu1973scheduling}, which proved that for a set of \(n\) periodic 
+tasks with unique periods, a feasible schedule that will always meet deadlines exists if the CPU 
+utilization is below a specific bound (depending on the number of tasks). The schedulability test 
+for Rate Monotonic Scheduler is:
 
-To calculate if a set of tasks is scalable in Rate Monotonic, it's used the following equation:
-
-[Equacao do Rate Monotonic]
+\[ \displaystyle U = \sum_{i=1}^{n}\frac{C_i}{P_i} \leq n(2^\frac{1}{n} - 1) \]
 
 The set of tasks for RTDMS was mathematically proved as scalable:
 
