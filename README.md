@@ -9,9 +9,9 @@ The system focus is warn employees who maintain the datacenter at any signal of 
 ## Resources
 This project uses the following resources to achieve it's objective:
 - 1x - Arduino Uno
-- 2x - Temperature and humidity sensors
+- 3x - Temperature and humidity sensors
 - 1x - Rain sensor
-- 
+
 ## Deadlines:
 Paper:
 - 02/05/16: Version 1 of the section 2 (Related concepts)
