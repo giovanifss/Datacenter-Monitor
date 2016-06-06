@@ -11,6 +11,8 @@
 
 \usepackage{amsmath}
 
+% Desenho do grafo
+\usepackage{tikz}
      
 \sloppy
 
@@ -173,6 +175,51 @@ The RTDMS have the following tasks model:
 
 Comentarios sobre cada task especifica.
 
+%\begin{center}
+\begin{tikzpicture}[scale=0.2]
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (11.2,-13.1) circle (3);
+\draw (11.2,-13.1) node {$IS$};
+\draw [black] (11.2,-13.1) circle (2.4);
+\draw [black] (31,-13.1) circle (3);
+\draw (31,-13.1) node {$CT$};
+\draw [black] (31,-33.7) circle (3);
+\draw (31,-33.7) node {$CF$};
+\draw [black] (61.4,-17.3) circle (3);
+\draw (61.4,-17.3) node {$AM$};
+\draw [black] (14.2,-13.1) -- (28,-13.1);
+\fill [black] (28,-13.1) -- (27.2,-12.6) -- (27.2,-13.6);
+\draw (21.1,-13.6) node [below] {$1$};
+\draw [black] (9.877,-10.42) arc (234:-54:2.25);
+\draw (11.2,-5.85) node [above] {$0$};
+\fill [black] (12.52,-10.42) -- (13.4,-10.07) -- (12.59,-9.48);
+\draw [black] (29.723,-30.988) arc (-158.8625:-201.1375:21.043);
+\fill [black] (29.72,-30.99) -- (29.9,-30.06) -- (28.97,-30.42);
+\draw (27.81,-23.4) node [left] {$0$};
+\draw [black] (58.45,-17.841) arc (-81.54867:-114.18346:44.476);
+\fill [black] (58.45,-17.84) -- (57.58,-17.46) -- (57.73,-18.45);
+\draw (45.45,-18.51) node [below] {$1$};
+\draw [black] (60.602,-20.19) arc (-19.25615:-104.05246:22.537);
+\fill [black] (60.6,-20.19) -- (59.87,-20.78) -- (60.81,-21.11);
+\draw (51.17,-33.09) node [below] {$1$};
+\draw [black] (32.197,-15.848) arc (19.70004:-19.70004:22.402);
+\fill [black] (32.2,-15.85) -- (32,-16.77) -- (32.94,-16.43);
+\draw (34.01,-23.4) node [right] {$0$};
+\draw [black] (60.077,-14.62) arc (234:-54:2.25);
+\draw (61.4,-10.05) node [above] {$1$};
+\fill [black] (62.72,-14.62) -- (63.6,-14.27) -- (62.79,-13.68);
+\draw [black] (33.909,-12.37) arc (101.78619:62.48167:37.354);
+\fill [black] (33.91,-12.37) -- (34.79,-12.7) -- (34.59,-11.72);
+\draw (47.03,-11.33) node [above] {$0$};
+\end{tikzpicture}
+
+\begin{itemize}
+ \item IS: Initial State. Outputs '1' when the system is activated;
+ \item AM: Alarm. Outputs '0' when is turned off manually;
+ \item CF: Check Flood. Outputs '1' when identifies a considerable amount of water;
+ \item CT: Check Temperature. Outputs '1' when identifies a temperature above what it should be.
+\end{itemize}
+
 \subsubsection{Time Restrictions}
 
 The RTDMS time restriction is the warning time. In the moment that RTDMS detects an adverse condition,
@@ -213,11 +260,11 @@ This set of tasks were submitted to simulation in XXXX(nome da ferramenta) and w
 \section{Experiments and Evaluation}
 
 The prototype implementation of RTDMS consisted in the following hardware equipments:
-\begin{enumerate}
+\begin{itemize}
  \item 1x - Arduino Uno
  \item 3x - Temperature and humidity sensors
  \item 1x - Rain sensor
-\end{enumerate}
+\end{itemize}
 
 This prototype used the NilRTOS implementation of the Rate Monotonic algorithm available in 
 https://github.com/greiman/NilRTOS-Arduino .
