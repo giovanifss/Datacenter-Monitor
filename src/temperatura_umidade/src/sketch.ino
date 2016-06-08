@@ -10,23 +10,37 @@
 #include<DHT.h>
 
 /* dht(Pin, Sensor Model) */
-DHT dht(A1, DHT11);
+DHT dht1(A1, DHT11);
+DHT dht2(A2, DHT11);
 
 void setup()
 {
     Serial.begin(9600);
-    dht.begin();
+    dht1.begin();
+    dht2.begin();
 }
 
 void loop()
 {
-    float humidity = dht.readHumidity();
-    float temperature = dht.readTemperature();
+    float humidity1 = dht1.readHumidity();
+    float temperature1 = dht1.readTemperature();
 
+    float humidity2 = dht2.readHumidity();
+    float temperature2 = dht2.readTemperature();
+
+    Serial.print("Sensor 1 - ");
     Serial.print("Humidity: ");
-    Serial.print(humidity);
+    Serial.print(humidity1);
     Serial.print(" | Temperature: ");
-    Serial.println(temperature);
+    Serial.println(temperature1);
+
+    Serial.print("Sensor 2 - ");
+    Serial.print("Humidity: ");
+    Serial.print(humidity2);
+    Serial.print(" | Temperature: ");
+    Serial.println(temperature2);
+
+    Serial.println();
 
     delay(2000);
 }
