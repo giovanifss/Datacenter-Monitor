@@ -5,42 +5,47 @@ void setup();
 void loop();
 #line 1 "src/main.ino"
 //#include <NilRTOS.h>
-
 //#include <NilSerial.h>
 
+/* NilSerial is lighter than Serial */
 #define Serial NilSerial
 
-// The LED is attached to pin 13 on Arduino.
-const uint8_t LED_PIN = 13;
+/* Alert Task Config's */
+#define ALERT_PIN 9
+#define ALERT_DELAY 200
+
+//-----------------------------------------------------------------------------------------------------------------------------
 
 /*
- * Check temperature and humidity task
+ * Alert Task
+ * 
+ * This is the first task because it is the most important
+ * If this task does not execute or execute with delay, several
+ * problems can happen to the Datacenter
+ *
  */
+
 // Stack with 128 bytes beyond context switch and interrupt needs
 NIL_WORKING_AREA(waThread1, 128);
 
 // Thread function for check temperature and humidity task
 NIL_THREAD(Thread1, arg){
     while (TRUE) {
-        // Turn LED off.
-        digitalWrite(LED_PIN, LOW);
+        analogWrite(ALERT_PIN, 20);         // Almost any value can be used except 0 and 255 to turn it on
+        delay(ALERT_DELAY);                 // Wait for a delayms ms
+        analogWrite(ALERT_PIN, 0);          // 0 turns it off
+        delay(ALERT_DELAY);                 // Wait for a delayms ms   
 
-        // Sleep for 200 miliseconds
-        nilThdSleepMilliseconds(500);
-
-        // Turn LED off.
-        digitalWrite(LED_PIN, HIGH);
-
-        Serial.println("Thread 1");
-
-        // Sleep for 200 miliseconds
-        nilThdSleepMilliseconds(1000);
+        nilThdSleepMilliseconds(300);
     }
 }
+
+//-----------------------------------------------------------------------------------------------------------------------------
 
 /*
  * Check water flood task
  */
+
 // Stack with 128 bytes beyond context switch and interrupt needs
 NIL_WORKING_AREA(waThread2, 128);
 
@@ -54,9 +59,10 @@ NIL_THREAD(Thread2, arg){
 
         // Sleep for 200 miliseconds
         nilThdSleepMilliseconds(200);
-
     }
 }
+
+//-----------------------------------------------------------------------------------------------------------------------------
 
 /*
  * Threads static table, one entry per thread.  A thread's priority is
@@ -68,8 +74,31 @@ NIL_THREADS_TABLE_ENTRY(NULL, Thread1, NULL, waThread1, sizeof(waThread1))
 NIL_THREADS_TABLE_ENTRY(NULL, Thread2, NULL, waThread2, sizeof(waThread2))
 NIL_THREADS_TABLE_END()
 
+//-----------------------------------------------------------------------------------------------------------------------------
+
 void setup(){
+    // Start serial communication
     Serial.begin(9600);
+
+    // Declare alert task pin to be an output (Alert Task)
+    pinMode(ALERT_PIN, OUTPUT);
+
+    // Beep 3 fast times to show that system was activated
+    analogWrite(ALERT_PIN, 20);         // Almost any value can be used except 0 and 255 to turn it on
+    delay(50);                          // Wait for a delayms ms
+    analogWrite(ALERT_PIN, 0);          // 0 turns it off
+    delay(50);                          // Wait for a delayms ms   
+
+    analogWrite(ALERT_PIN, 20);         // Almost any value can be used except 0 and 255 to turn it on
+    delay(50);                          // Wait for a delayms ms
+    analogWrite(ALERT_PIN, 0);          // 0 turns it off
+    delay(50);                          // Wait for a delayms ms   
+
+    analogWrite(ALERT_PIN, 20);         // Almost any value can be used except 0 and 255 to turn it on
+    delay(50);                          // Wait for a delayms ms
+    analogWrite(ALERT_PIN, 0);          // 0 turns it off
+    delay(50);                          // Wait for a delayms ms   
+
     // Start Nil RTOS
     nilSysBegin();
 }
