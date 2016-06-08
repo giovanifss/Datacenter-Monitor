@@ -9,6 +9,16 @@
  
  */
 
+/*
+
+ Hardware Connections
+
+ Output pin => Middle connector of potentiometer
+ Right connector of potentiometer => Positive connector of buzzer
+ Left connector of buzzer => Ground
+
+ */
+
 void setup()  { 
   // declare pin 9 to be an output:
   pinMode(9, OUTPUT);
