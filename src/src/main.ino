@@ -5,14 +5,6 @@
 //-----------------------------------------------------------------------------------------------------------------------------
 
 /*
- * Global configurations for program
- */
-
-#define DEBUG_RTDMS         // Activates extra logs and add a sleep time of 1 second to alert task
-
-//-----------------------------------------------------------------------------------------------------------------------------
-
-/*
  * NilRTOS Config's
  */
 
@@ -68,8 +60,8 @@ DHT sensors[] = {
  *
  */
 
-// Stack with 128 bytes beyond context switch and interrupt needs
-NIL_WORKING_AREA(waThread1, 128);
+// This task doesn't need a stack
+NIL_WORKING_AREA(waThread1, 0);
 
 // Thread function for Alert Task
 NIL_THREAD(Thread1, arg){
@@ -79,10 +71,8 @@ NIL_THREAD(Thread1, arg){
         analogWrite(ALERT_PIN, 0);          // 0 turns it off
         delay(ALERT_DELAY);                 // Wait for a delayms ms   
 
-        #ifdef DEBUG_RTDMS
-            // Just to test the other tasks
-            nilThdSleepMilliseconds(1000);
-        #endif
+        // Just to test the other tasks
+        nilThdSleepMilliseconds(1000);
     }
 }
 
@@ -96,18 +86,18 @@ NIL_THREAD(Thread1, arg){
  * sensors. If more sensors are added, these times need to be recalculated
  */
 
-// Stack with 128 bytes beyond context switch and interrupt needs
-NIL_WORKING_AREA(waThread2, 256);
+// Stack with 384 bytes beyond context switch and interrupt needs
+NIL_WORKING_AREA(waThread2, 384);
 
 // Thread function for check temperature and humidity task
 NIL_THREAD(Thread2, arg){
     while (TRUE) {
         for (unsigned char i = 0; i < QTD_SENSORS; i++) {
-            Serial.print("Sensor ");
+            Serial.print("S ");
             Serial.print(i);
-            Serial.print(" - Humidity: ");
+            Serial.print(" - H: ");
             Serial.print(sensors[i].readHumidity());
-            Serial.print(" | Temperature: ");
+            Serial.print(" | T: ");
             Serial.println(sensors[i].readTemperature());
         }
 
@@ -115,7 +105,7 @@ NIL_THREAD(Thread2, arg){
         Serial.println();
 
         /* Waits 1 second to wake */
-        nilThdSleepMilliseconds(1000);
+        nilThdSleepMilliseconds(2000);
     }
 }
 
@@ -125,27 +115,18 @@ NIL_THREAD(Thread2, arg){
  * Check water flood task
  */
 
-// Stack with 128 bytes beyond context switch and interrupt needs
-NIL_WORKING_AREA(waThread3, 256);
+// Stack with 384 bytes beyond context switch and interrupt needs
+NIL_WORKING_AREA(waThread3, 384);
 
 // Thread function for check water flood task
 NIL_THREAD(Thread3, arg){
     while (TRUE) {
         if (analogRead(FLOOD_PIN) < WATER_LIMIT){
-            Serial.println("Warning!!! Flood detected!!!");
+            Serial.println("Flood detected!");
         } 
-        /* If in DEBUG mode, prints that it has not detected flood */
-        #ifdef DEBUG_RTDMS
-        else {
-            Serial.println("Ok! No Flood detected!!"); 
-        }
-        #endif
-
-        /* Jumps one line to not mess output */
-        Serial.println();
 
         /* Sleep for 1 second */
-        nilThdSleepMilliseconds(400);
+        nilThdSleepMilliseconds(1000);
     }
 }
 
@@ -158,7 +139,7 @@ NIL_THREAD(Thread3, arg){
  */
 NIL_THREADS_TABLE_BEGIN()
 NIL_THREADS_TABLE_ENTRY(NULL, Thread1, NULL, waThread1, sizeof(waThread1))
-//NIL_THREADS_TABLE_ENTRY(NULL, Thread2, NULL, waThread2, sizeof(waThread2))
+NIL_THREADS_TABLE_ENTRY(NULL, Thread2, NULL, waThread2, sizeof(waThread2))
 NIL_THREADS_TABLE_ENTRY(NULL, Thread3, NULL, waThread3, sizeof(waThread2))
 NIL_THREADS_TABLE_END()
 
@@ -172,9 +153,9 @@ void setup(){
     pinMode(ALERT_PIN, OUTPUT);
 
     // Init the temperature and humidity sensors
-    //for (unsigned char i = 0; i < QTD_SENSORS; i++) {
-    //    sensors[i].begin(); 
-    //}
+    for (unsigned char i = 0; i < QTD_SENSORS; i++) {
+        sensors[i].begin(); 
+    }
 
     // Beep 3 fast times to show that system was activated
     analogWrite(ALERT_PIN, 20);         // Almost any value can be used except 0 and 255 to turn it on
