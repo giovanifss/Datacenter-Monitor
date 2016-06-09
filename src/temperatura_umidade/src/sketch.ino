@@ -9,36 +9,34 @@
 
 #include<DHT.h>
 
+#define QTD_SENSORS 3
+
 /* dht(Pin, Sensor Model) */
-DHT dht1(A1, DHT11);
-DHT dht2(A2, DHT11);
+DHT sensors[] = {
+    DHT(A1, DHT11),
+    DHT(A2, DHT11),
+    DHT(A3, DHT11)
+};
 
 void setup()
 {
     Serial.begin(9600);
-    dht1.begin();
-    dht2.begin();
+
+    for (unsigned char i = 0; i < QTD_SENSORS; i++) {
+        sensors[i].begin(); 
+    }
 }
 
 void loop()
 {
-    float humidity1 = dht1.readHumidity();
-    float temperature1 = dht1.readTemperature();
-
-    float humidity2 = dht2.readHumidity();
-    float temperature2 = dht2.readTemperature();
-
-    Serial.print("Sensor 1 - ");
-    Serial.print("Humidity: ");
-    Serial.print(humidity1);
-    Serial.print(" | Temperature: ");
-    Serial.println(temperature1);
-
-    Serial.print("Sensor 2 - ");
-    Serial.print("Humidity: ");
-    Serial.print(humidity2);
-    Serial.print(" | Temperature: ");
-    Serial.println(temperature2);
+    for (unsigned char i = 0; i < QTD_SENSORS; i++) {
+        Serial.print("Sensor ");
+        Serial.print(i);
+        Serial.print(" - Humidity: ");
+        Serial.print(sensors[i].readHumidity());
+        Serial.print(" | Temperature: ");
+        Serial.println(sensors[i].readTemperature());
+    }
 
     Serial.println();
 
