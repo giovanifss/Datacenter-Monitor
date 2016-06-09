@@ -14,4 +14,5 @@
   /usr/share/arduino/libraries/NilRTOS/nilconf.h \
   /usr/share/arduino/libraries/NilRTOS/niltypes.h \
   /usr/share/arduino/libraries/NilRTOS/nilcore.h \
-  /usr/share/arduino/libraries/NilRTOS/NilSerial.h
+  /usr/share/arduino/libraries/NilRTOS/NilSerial.h \
+  /usr/share/arduino/libraries/DHT/DHT.h

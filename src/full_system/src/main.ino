@@ -1,12 +1,27 @@
 #include <NilRTOS.h>
 #include <NilSerial.h>
+#include <DHT.h>
 
 /* NilSerial is lighter than Serial */
 #define Serial NilSerial
 
+//-----------------------------------------------------------------------------------------------------------------------------
+
 /* Alert Task Config's */
 #define ALERT_PIN 9
 #define ALERT_DELAY 200
+
+//-----------------------------------------------------------------------------------------------------------------------------
+
+/* Check Temperature and Humidity Task Config's */
+#define QTD_SENSORS 3
+
+/* Set Pin and Sensor Type for Temperature and Humidity Task */
+DHT sensors[] = {
+    DHT(A1, DHT11),
+    DHT(A2, DHT11),
+    DHT(A3, DHT11)
+};
 
 //-----------------------------------------------------------------------------------------------------------------------------
 
@@ -22,7 +37,7 @@
 // Stack with 128 bytes beyond context switch and interrupt needs
 NIL_WORKING_AREA(waThread1, 128);
 
-// Thread function for check temperature and humidity task
+// Thread function for Alert Task
 NIL_THREAD(Thread1, arg){
     while (TRUE) {
         analogWrite(ALERT_PIN, 20);         // Almost any value can be used except 0 and 255 to turn it on
@@ -35,14 +50,47 @@ NIL_THREAD(Thread1, arg){
 //-----------------------------------------------------------------------------------------------------------------------------
 
 /*
- * Check water flood task
+ * Check Temperature and Humidity Task
+ *
+ * This task uses 3 sensors to check and validate the temperature
+ * WARNING: The computing time for this task was measured with 3
+ * sensors. If more sensors are added, these times need to be recalculated
  */
 
 // Stack with 128 bytes beyond context switch and interrupt needs
 NIL_WORKING_AREA(waThread2, 128);
 
-// Thread function for check water flood task
+// Thread function for check temperature and humidity task
 NIL_THREAD(Thread2, arg){
+    while (TRUE) {
+        for (unsigned char i = 0; i < QTD_SENSORS; i++) {
+            Serial.print("Sensor ");
+            Serial.print(i);
+            Serial.print(" - Humidity: ");
+            Serial.print(sensors[i].readHumidity());
+            Serial.print(" | Temperature: ");
+            Serial.println(sensors[i].readTemperature());
+        }
+
+        /* Jumps one line to not mess output */
+        Serial.println();
+
+        /* Waits 1 second to wake */
+        nilThdSleepMilliseconds(1000);
+    }
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------
+
+/*
+ * Check water flood task
+ */
+
+// Stack with 128 bytes beyond context switch and interrupt needs
+NIL_WORKING_AREA(waThread3, 128);
+
+// Thread function for check water flood task
+NIL_THREAD(Thread3, arg){
     while (TRUE) {
         // Sleep for 200 miliseconds
         nilThdSleepMilliseconds(200);
@@ -74,6 +122,11 @@ void setup(){
 
     // Declare alert task pin to be an output (Alert Task)
     pinMode(ALERT_PIN, OUTPUT);
+
+    // Init the temperature and humidity sensors
+    for (unsigned char i = 0; i < QTD_SENSORS; i++) {
+        sensors[i].begin(); 
+    }
 
     // Beep 3 fast times to show that system was activated
     analogWrite(ALERT_PIN, 20);         // Almost any value can be used except 0 and 255 to turn it on
