@@ -5,6 +5,14 @@
 //-----------------------------------------------------------------------------------------------------------------------------
 
 /*
+ * Global configurations for program
+ */
+
+#define DEBUG_RTDMS         // Activates extra logs and add a sleep time of 1 second to alert task
+
+//-----------------------------------------------------------------------------------------------------------------------------
+
+/*
  * NilRTOS Config's
  */
 
@@ -34,7 +42,7 @@
  * Check Temperature and Humidity Task Config's 
  */
 
-#define QTD_SENSORS 3   // How many sensors are available to use
+#define QTD_SENSORS 3       // How many sensors are available to use
 
 /* 
  * All configuration needed for the sensors
@@ -70,6 +78,11 @@ NIL_THREAD(Thread1, arg){
         delay(ALERT_DELAY);                 // Wait for a delayms ms
         analogWrite(ALERT_PIN, 0);          // 0 turns it off
         delay(ALERT_DELAY);                 // Wait for a delayms ms   
+
+        #ifdef DEBUG_RTDMS
+            // Just to test the other tasks
+            nilThdSleepMilliseconds(1000);
+        #endif
     }
 }
 
@@ -84,7 +97,7 @@ NIL_THREAD(Thread1, arg){
  */
 
 // Stack with 128 bytes beyond context switch and interrupt needs
-NIL_WORKING_AREA(waThread2, 128);
+NIL_WORKING_AREA(waThread2, 256);
 
 // Thread function for check temperature and humidity task
 NIL_THREAD(Thread2, arg){
@@ -113,20 +126,26 @@ NIL_THREAD(Thread2, arg){
  */
 
 // Stack with 128 bytes beyond context switch and interrupt needs
-NIL_WORKING_AREA(waThread3, 128);
+NIL_WORKING_AREA(waThread3, 256);
 
 // Thread function for check water flood task
 NIL_THREAD(Thread3, arg){
     while (TRUE) {
         if (analogRead(FLOOD_PIN) < WATER_LIMIT){
             Serial.println("Warning!!! Flood detected!!!");
+        } 
+        /* If in DEBUG mode, prints that it has not detected flood */
+        #ifdef DEBUG_RTDMS
+        else {
+            Serial.println("Ok! No Flood detected!!"); 
         }
+        #endif
 
         /* Jumps one line to not mess output */
         Serial.println();
 
         /* Sleep for 1 second */
-        nilThdSleepMilliseconds(1000);
+        nilThdSleepMilliseconds(400);
     }
 }
 
@@ -139,7 +158,7 @@ NIL_THREAD(Thread3, arg){
  */
 NIL_THREADS_TABLE_BEGIN()
 NIL_THREADS_TABLE_ENTRY(NULL, Thread1, NULL, waThread1, sizeof(waThread1))
-NIL_THREADS_TABLE_ENTRY(NULL, Thread2, NULL, waThread2, sizeof(waThread2))
+//NIL_THREADS_TABLE_ENTRY(NULL, Thread2, NULL, waThread2, sizeof(waThread2))
 NIL_THREADS_TABLE_ENTRY(NULL, Thread3, NULL, waThread3, sizeof(waThread2))
 NIL_THREADS_TABLE_END()
 
@@ -153,9 +172,9 @@ void setup(){
     pinMode(ALERT_PIN, OUTPUT);
 
     // Init the temperature and humidity sensors
-    for (unsigned char i = 0; i < QTD_SENSORS; i++) {
-        sensors[i].begin(); 
-    }
+    //for (unsigned char i = 0; i < QTD_SENSORS; i++) {
+    //    sensors[i].begin(); 
+    //}
 
     // Beep 3 fast times to show that system was activated
     analogWrite(ALERT_PIN, 20);         // Almost any value can be used except 0 and 255 to turn it on
