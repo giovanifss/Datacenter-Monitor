@@ -9,21 +9,47 @@ void loop();
 //#include <NilSerial.h>
 //#include <DHT.h>
 
-/* NilSerial is lighter than Serial */
-#define Serial NilSerial
+//-----------------------------------------------------------------------------------------------------------------------------
+
+/*
+ * NilRTOS Config's
+ */
+
+#define Serial NilSerial    // NilSerial is lighter than Serial
 
 //-----------------------------------------------------------------------------------------------------------------------------
 
-/* Alert Task Config's */
-#define ALERT_PIN 9
-#define ALERT_DELAY 200
+/*
+ * Check Water Flood Task Config's
+ */
+
+#define FLOOD_PIN A0        // Pin used for read from rain sensor
+#define WATER_LIMIT 700     // The limit value for rain sensor to consider flood
 
 //-----------------------------------------------------------------------------------------------------------------------------
 
-/* Check Temperature and Humidity Task Config's */
-#define QTD_SENSORS 3
+/* 
+ * Alert Task Config's 
+ */
 
-/* Set Pin and Sensor Type for Temperature and Humidity Task */
+#define ALERT_PIN 9         // Output Pin
+#define ALERT_DELAY 200     // In Milliseconds
+
+//-----------------------------------------------------------------------------------------------------------------------------
+
+/* 
+ * Check Temperature and Humidity Task Config's 
+ */
+
+#define QTD_SENSORS 3   // How many sensors are available to use
+
+/* 
+ * All configuration needed for the sensors
+ *
+ * This includes:
+ *   - Pin for Read
+ *   - Sensor Type
+ */
 DHT sensors[] = {
     DHT(A1, DHT11),
     DHT(A2, DHT11),
@@ -99,13 +125,15 @@ NIL_WORKING_AREA(waThread3, 128);
 // Thread function for check water flood task
 NIL_THREAD(Thread3, arg){
     while (TRUE) {
-        // Sleep for 200 miliseconds
-        nilThdSleepMilliseconds(200);
+        if (analogRead(FLOOD_PIN) < WATER_LIMIT){
+            Serial.println("Warning!!! Flood detected!!!");
+        }
 
-        Serial.println("Thread 2");
+        /* Jumps one line to not mess output */
+        Serial.println();
 
-        // Sleep for 200 miliseconds
-        nilThdSleepMilliseconds(200);
+        /* Sleep for 1 second */
+        nilThdSleepMilliseconds(1000);
     }
 }
 
@@ -119,6 +147,7 @@ NIL_THREAD(Thread3, arg){
 NIL_THREADS_TABLE_BEGIN()
 NIL_THREADS_TABLE_ENTRY(NULL, Thread1, NULL, waThread1, sizeof(waThread1))
 NIL_THREADS_TABLE_ENTRY(NULL, Thread2, NULL, waThread2, sizeof(waThread2))
+NIL_THREADS_TABLE_ENTRY(NULL, Thread3, NULL, waThread3, sizeof(waThread2))
 NIL_THREADS_TABLE_END()
 
 //-----------------------------------------------------------------------------------------------------------------------------
