@@ -35,6 +35,13 @@
  */
 
 #define QTD_SENSORS 3       // How many sensors are available to use
+#define TOLERANCE 3         // The difference of degrees allowed by system
+
+float tmp_avg = 0;
+float hmd_avg = 0;
+float temps[QTD_SENSORS];   // To store the temperatures readed by the sensors
+float hmdts[QTD_SENSORS];   // To store the humidities readed by the sensors
+float diff[QTD_SENSORS];    // The difference from mean(average) for all sensors
 
 /* 
  * All configuration needed for the sensors
@@ -92,14 +99,79 @@ NIL_WORKING_AREA(waThread2, 384);
 // Thread function for check temperature and humidity task
 NIL_THREAD(Thread2, arg){
     while (TRUE) {
+        tmp_avg = 0;
+        hmd_avg = 0;
+
         for (unsigned char i = 0; i < QTD_SENSORS; i++) {
+            float aux = sensors[i].readTemperature();
+
+            /* Checks if temperature is a number */
+            if (aux == NAN)
+                temps[i] = 0.0;
+            else 
+                temps[i] = aux;
+
+            tmp_avg += temps[i];
+
+            aux = sensors[i].readHumidity(); 
+
+            /* Checks if humidity is a number */
+            if (aux == NAN)
+                hmdts[i] = 0.0;
+            else
+                hmdts[i] = aux;
+
             Serial.print("S ");
             Serial.print(i);
             Serial.print(" - H: ");
-            Serial.print(sensors[i].readHumidity());
+            Serial.print(hmdts[i]);
             Serial.print(" | T: ");
-            Serial.println(sensors[i].readTemperature());
+            Serial.println(temps[i]);
         }
+
+        /* Computes the average for temperature and humidity */
+        tmp_avg /= QTD_SENSORS;
+        hmd_avg /= QTD_SENSORS;
+
+        float bigger = 0;
+        _Bool repeated = false;
+
+        Serial.println(tmp_avg);
+
+        for (unsigned char i = 0; i < QTD_SENSORS; i++) {
+            diff[i] = temps[i] - tmp_avg;        
+
+            /* Get absolute value from numbers */
+            if (diff[i] < 0)
+                diff[i] *= -1;
+
+            if (diff[i] > bigger){
+                bigger = diff[i];
+                repeated = false;
+            } else if (diff[i] == bigger) {
+                repeated = true; 
+            }
+        }
+
+        float temp = 0;
+
+        if (repeated == false && bigger >= TOLERANCE) {
+
+            for (unsigned char i = 0; i < QTD_SENSORS; i++){
+                if (diff[i] != bigger) 
+                    temp += temps[i];
+            } 
+
+            /* Final temperature for 1 sensor failure */
+            temp /= (QTD_SENSORS - 1);
+        } else {
+            for (unsigned char i = 0; i < QTD_SENSORS; i++) 
+                temp += temps[i];
+
+            temp /= QTD_SENSORS;
+        }
+
+        Serial.println(temp);
 
         /* Jumps one line to not mess output */
         Serial.println();
@@ -155,6 +227,9 @@ void setup(){
     // Init the temperature and humidity sensors
     for (unsigned char i = 0; i < QTD_SENSORS; i++) {
         sensors[i].begin(); 
+        temps[i] = 0;
+        hmdts[i] = 0;
+        diff[i] = 0;
     }
 
     // Beep 3 fast times to show that system was activated
