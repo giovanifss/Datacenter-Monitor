@@ -249,19 +249,17 @@ for Rate Monotonic Scheduler is:
 Where \(U\) is the CPU utilization, \(C_i\) is the computation time of the task \(i\), \(P_i\) is the release period (with deadline one period after),
 and \(n\) is the number of processes to be scheduled.
 
-\iffalse
-Enumerate pros elementos da equacao
-\begin{enumerate}
-  \item \(U\).
-  \item Aperiodic task: activated at unpredictable times.
-  \item Sporadic task: an aperiodic task with the additional constraint that there is a minimum interarrival time 
-between task activations.
-\end{enumerate}
-\fi
-
 The set of tasks for RTDMS was mathematically proved as scalable:
 
-[Contas de escalonabilidade das tasks do RTDMS]
+\begin{enumerate}
+ \item Check Flood: \[ C_1 = \frac{C_1}{P_1} = \frac{30}{1500} = 0.0200 \]
+ \item Check Temperature: \[ C_2 = \frac{C_2}{P_2} = \frac{820}{1500} = 0.5467 \]
+ \item Check Humidity: \[ C_3 = \frac{C_3}{P_3} = \frac{20}{1500} = 0.0133 \]
+\end{enumerate}
+
+\[ U = \sum_{i=1}^{3}\frac{C_i}{P_i} = 0.7600 \leq 3(2^\frac{1}{3} - 1) = 0.7797 \]
+
+\[ U = 0.7600 \leq 0.7797 \]
 
 This set of tasks were submitted to simulation in XXXX(nome da ferramenta) and was proved as scalable:
 
