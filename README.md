@@ -11,6 +11,8 @@ This project uses the following resources to achieve it's objective:
 - 1x - Arduino Uno
 - 3x - Temperature and humidity sensors
 - 1x - Rain sensor
+- 1x - Buzzer
+- 1x - Potentiometer
 
 ## Deadlines:
 Paper:
