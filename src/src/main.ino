@@ -5,6 +5,32 @@
 //-----------------------------------------------------------------------------------------------------------------------------
 
 /*
+ * Full System configurations
+ */
+
+/*
+ * This is the limit of temperature
+ * 
+ * If a higher temperature is detected, the system will alert the problem
+ */
+#define TMP_LIMIT 25        // The limit of temperature, if its above, the system will alert
+
+/*
+ * This is the limit of humidity
+ * 
+ * If a higher humidity is detected, the system will alert the problem
+ */
+#define HMD_LIMIT 70        // The limit of humidity, if its above, the system will alert
+
+/*
+ * This is to allow system to print extra informations
+ * Allowing the user to see what is going on behind the scenes
+ */
+//#define DEBUG_RTDMS         // Uncomment this line to activate DEBUG
+
+//-----------------------------------------------------------------------------------------------------------------------------
+
+/*
  * NilRTOS Config's
  */
 
@@ -31,17 +57,11 @@
 //-----------------------------------------------------------------------------------------------------------------------------
 
 /* 
- * Check Temperature and Humidity Task Config's 
+ * Check Temperature and Check Humidity Tasks Config's 
  */
 
 #define QTD_SENSORS 3       // How many sensors are available to use
-#define TOLERANCE 3         // The difference of degrees allowed by system
-
-float tmp_avg = 0;
-float hmd_avg = 0;
-float temps[QTD_SENSORS];   // To store the temperatures readed by the sensors
-float hmdts[QTD_SENSORS];   // To store the humidities readed by the sensors
-float diff[QTD_SENSORS];    // The difference from mean(average) for all sensors
+#define TOLERANCE 2         // The difference of degrees allowed by system
 
 /* 
  * All configuration needed for the sensors
@@ -59,6 +79,20 @@ DHT sensors[] = {
 //-----------------------------------------------------------------------------------------------------------------------------
 
 /*
+ * Signature of helper functions
+ *
+ * The helper functions implementations are in the end of the file
+ */
+
+/* This function deals with a possible fault in sensor and computes a valid mean */
+float get_fault_free_value(float values[]);
+
+/* This function uses the buzzer's configuration to beep at a interval */
+void beep(unsigned char interval);
+
+//-----------------------------------------------------------------------------------------------------------------------------
+
+/*
  * Alert Task
  * 
  * This is the first task because it is the most important
@@ -71,12 +105,10 @@ DHT sensors[] = {
 NIL_WORKING_AREA(waThread1, 0);
 
 // Thread function for Alert Task
-NIL_THREAD(Thread1, arg){
+NIL_THREAD(Thread1, arg)
+{
     while (TRUE) {
-        analogWrite(ALERT_PIN, 20);         // Almost any value can be used except 0 and 255 to turn it on
-        delay(ALERT_DELAY);                 // Wait for a delayms ms
-        analogWrite(ALERT_PIN, 0);          // 0 turns it off
-        delay(ALERT_DELAY);                 // Wait for a delayms ms   
+        beep(ALERT_DELAY);
 
         // Just to test the other tasks
         nilThdSleepMilliseconds(1000);
@@ -86,7 +118,7 @@ NIL_THREAD(Thread1, arg){
 //-----------------------------------------------------------------------------------------------------------------------------
 
 /*
- * Check Temperature and Humidity Task
+ * Check Temperature Task
  *
  * This task uses 3 sensors to check and validate the temperature
  * WARNING: The computing time for this task was measured with 3
@@ -97,84 +129,76 @@ NIL_THREAD(Thread1, arg){
 NIL_WORKING_AREA(waThread2, 384);
 
 // Thread function for check temperature and humidity task
-NIL_THREAD(Thread2, arg){
+NIL_THREAD(Thread2, arg)
+{
     while (TRUE) {
-        tmp_avg = 0;
-        hmd_avg = 0;
+        float temps[QTD_SENSORS];   // To store the temperatures readed by the sensors
 
         for (unsigned char i = 0; i < QTD_SENSORS; i++) {
             float aux = sensors[i].readTemperature();
 
-            /* Checks if temperature is a number */
+            /* Checks if temperature is not a number (a.k.a. NAN)*/
             if (aux == NAN)
                 temps[i] = 0.0;
             else 
                 temps[i] = aux;
 
-            tmp_avg += temps[i];
-
-            aux = sensors[i].readHumidity(); 
-
-            /* Checks if humidity is a number */
-            if (aux == NAN)
-                hmdts[i] = 0.0;
-            else
-                hmdts[i] = aux;
-
-            Serial.print("S ");
-            Serial.print(i);
-            Serial.print(" - H: ");
-            Serial.print(hmdts[i]);
-            Serial.print(" | T: ");
-            Serial.println(temps[i]);
+            #ifdef DEBUG_RTDMS
+                Serial.print("S ");
+                Serial.print(i);
+                Serial.print(" - T: ");
+                Serial.println(temps[i]);
+            #endif
         }
 
-        /* Computes the average for temperature and humidity */
-        tmp_avg /= QTD_SENSORS;
-        hmd_avg /= QTD_SENSORS;
+        if (get_fault_free_value(temps) >= TMP_LIMIT) {
+            Serial.println("Temp alert"); 
+        }
 
-        float bigger = 0;
-        _Bool repeated = false;
+        /* Waits 1 second to wake */
+        nilThdSleepMilliseconds(2000);
+    }
+}
 
-        Serial.println(tmp_avg);
+//-----------------------------------------------------------------------------------------------------------------------------
+
+/*
+ * Check Humidity Task
+ *
+ * This task uses 3 sensors to check and validate the humidity
+ * WARNING: The computing time for this task was measured with 3
+ * sensors. If more sensors are added, these times need to be recalculated
+ */
+
+// Stack with 384 bytes beyond context switch and interrupt needs
+NIL_WORKING_AREA(waThread3, 384);
+
+// Thread function for check water flood task
+NIL_THREAD(Thread3, arg)
+{
+    while (TRUE) {
+        float hmdts[QTD_SENSORS];   // To store the humidities readed by the sensors
 
         for (unsigned char i = 0; i < QTD_SENSORS; i++) {
-            diff[i] = temps[i] - tmp_avg;        
+            float aux = sensors[i].readHumidity();
 
-            /* Get absolute value from numbers */
-            if (diff[i] < 0)
-                diff[i] *= -1;
+            /* Checks if humidity is not a number (a.k.a. NAN)*/
+            if (aux == NAN)
+                hmdts[i] = 0.0;
+            else 
+                hmdts[i] = aux;
 
-            if (diff[i] > bigger){
-                bigger = diff[i];
-                repeated = false;
-            } else if (diff[i] == bigger) {
-                repeated = true; 
-            }
+            #ifdef DEBUG_RTDMS
+                Serial.print("S ");
+                Serial.print(i);
+                Serial.print(" - H: ");
+                Serial.println(hmdts[i]);
+            #endif
         }
 
-        float temp = 0;
-
-        if (repeated == false && bigger >= TOLERANCE) {
-
-            for (unsigned char i = 0; i < QTD_SENSORS; i++){
-                if (diff[i] != bigger) 
-                    temp += temps[i];
-            } 
-
-            /* Final temperature for 1 sensor failure */
-            temp /= (QTD_SENSORS - 1);
-        } else {
-            for (unsigned char i = 0; i < QTD_SENSORS; i++) 
-                temp += temps[i];
-
-            temp /= QTD_SENSORS;
+        if (get_fault_free_value(hmdts) >= HMD_LIMIT) {
+            Serial.println("Humd alert"); 
         }
-
-        Serial.println(temp);
-
-        /* Jumps one line to not mess output */
-        Serial.println();
 
         /* Waits 1 second to wake */
         nilThdSleepMilliseconds(2000);
@@ -188,14 +212,20 @@ NIL_THREAD(Thread2, arg){
  */
 
 // Stack with 384 bytes beyond context switch and interrupt needs
-NIL_WORKING_AREA(waThread3, 384);
+NIL_WORKING_AREA(waThread4, 384);
 
 // Thread function for check water flood task
-NIL_THREAD(Thread3, arg){
+NIL_THREAD(Thread4, arg)
+{
     while (TRUE) {
         if (analogRead(FLOOD_PIN) < WATER_LIMIT){
             Serial.println("Flood detected!");
         } 
+        #ifdef DEBUG_RTDMS
+        else {
+            Serial.println("No flood detected!"); 
+        }
+        #endif
 
         /* Sleep for 1 second */
         nilThdSleepMilliseconds(1000);
@@ -212,12 +242,20 @@ NIL_THREAD(Thread3, arg){
 NIL_THREADS_TABLE_BEGIN()
 NIL_THREADS_TABLE_ENTRY(NULL, Thread1, NULL, waThread1, sizeof(waThread1))
 NIL_THREADS_TABLE_ENTRY(NULL, Thread2, NULL, waThread2, sizeof(waThread2))
-NIL_THREADS_TABLE_ENTRY(NULL, Thread3, NULL, waThread3, sizeof(waThread2))
+NIL_THREADS_TABLE_ENTRY(NULL, Thread3, NULL, waThread3, sizeof(waThread3))
+NIL_THREADS_TABLE_ENTRY(NULL, Thread4, NULL, waThread4, sizeof(waThread4))
 NIL_THREADS_TABLE_END()
 
 //-----------------------------------------------------------------------------------------------------------------------------
 
-void setup(){
+/*
+ * Implementation of main functions of arduino
+ *
+ * Loop functions must be empty for NilRTOS
+ */
+
+void setup()
+{
     // Start serial communication
     Serial.begin(9600);
 
@@ -227,26 +265,12 @@ void setup(){
     // Init the temperature and humidity sensors
     for (unsigned char i = 0; i < QTD_SENSORS; i++) {
         sensors[i].begin(); 
-        temps[i] = 0;
-        hmdts[i] = 0;
-        diff[i] = 0;
     }
 
     // Beep 3 fast times to show that system was activated
-    analogWrite(ALERT_PIN, 20);         // Almost any value can be used except 0 and 255 to turn it on
-    delay(50);                          // Wait for a delayms ms
-    analogWrite(ALERT_PIN, 0);          // 0 turns it off
-    delay(50);                          // Wait for a delayms ms   
-
-    analogWrite(ALERT_PIN, 20);         // Almost any value can be used except 0 and 255 to turn it on
-    delay(50);                          // Wait for a delayms ms
-    analogWrite(ALERT_PIN, 0);          // 0 turns it off
-    delay(50);                          // Wait for a delayms ms   
-
-    analogWrite(ALERT_PIN, 20);         // Almost any value can be used except 0 and 255 to turn it on
-    delay(50);                          // Wait for a delayms ms
-    analogWrite(ALERT_PIN, 0);          // 0 turns it off
-    delay(50);                          // Wait for a delayms ms   
+    beep(50);
+    beep(50);
+    beep(50);
 
     // Start Nil RTOS
     nilSysBegin();
@@ -254,6 +278,63 @@ void setup(){
 
 // Loop is the idle thread. The idle thread must not invoke any 
 // kernel primitive able to change its state to not runnable.
-void loop(){
+void loop()
+{
     // Not used
+}
+
+//-----------------------------------------------------------------------------------------------------------------------------
+
+/*
+ * Implementation of helper functions declared in the beggining of the file
+ */
+
+float get_fault_free_value(float values[]){
+    float bigger = 0, average = 0;
+    _Bool repeated = false;
+    float diff[QTD_SENSORS];
+
+    for (unsigned char i = 0; i < QTD_SENSORS; i++)
+        average += values[i]; 
+
+    average /= QTD_SENSORS;
+
+    /* Identifies which sensor have the bigger difference and if it is alone */
+    for (unsigned char i = 0; i < QTD_SENSORS; i++) {
+        diff[i] = values[i] - average;        
+
+        /* Get absolute value from numbers */
+        if (diff[i] < 0)
+            diff[i] *= -1;
+
+        if (diff[i] > bigger){
+            bigger = diff[i];
+            repeated = false;
+        } else if (diff[i] == bigger) {
+            repeated = true; 
+        }
+    }
+
+    /* Recompute the average in the case of 1 sensor failure */
+    if (repeated == false && bigger >= TOLERANCE) {
+        /* Set average to 0 */
+        average = 0;
+
+        for (unsigned char i = 0; i < QTD_SENSORS; i++){
+            if (diff[i] != bigger) 
+                average += values[i];
+        } 
+
+        /* Final temperature for 1 sensor failure */
+        average /= (QTD_SENSORS - 1);
+    } 
+
+    return average;
+}
+
+void beep(unsigned char interval){
+    analogWrite(ALERT_PIN, 20);         // Almost any value can be used except 0 and 255 to turn it on
+    delay(interval);                    // Wait for a delayms ms
+    analogWrite(ALERT_PIN, 0);          // 0 turns it off
+    delay(interval);                    // Wait for a delayms ms   
 }
