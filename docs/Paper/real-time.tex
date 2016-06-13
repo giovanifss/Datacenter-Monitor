@@ -59,7 +59,7 @@ Glossary of MMC Terminology. Available: http://msdn.microsoft.com/en-us/library/
 
 It's important to understand what is time and it's related concepts. For this purpose, the definitions provided by
 \cite{kopetz2011real} will be considered: 
-\begin{enumerate}
+\begin{itemize}
  \item The flow of time is a directed time line that extends from the past into the future.
  \item A cut of the time line is called an instant.
  \item Any ideal occurrence that happens at an instant is called an event.
@@ -67,7 +67,7 @@ It's important to understand what is time and it's related concepts. For this pu
  \item An interval on the time line, called a duration, is defined by two events, the start event and the 
 terminating event of the interval.
  \item The instant when a result must be produced is called a deadline.
-\end{enumerate}
+\end{itemize}
 
 In the context of deadlines, \cite{kopetz2011real} also provides a good definition, classifying them in 
 three different ways:
@@ -108,13 +108,13 @@ usually cause several consequences, even death, when missed an important deadlin
 
 For \cite{stankovic1996real} tasks can be classified as:
 
-\begin{enumerate}
+\begin{itemize}
   \item Periodic task: activated every T units. The deadline for each activated instance may be less than, equal to, 
 or greater than the period T.
   \item Aperiodic task: activated at unpredictable times.
   \item Sporadic task: an aperiodic task with the additional constraint that there is a minimum interarrival time 
 between task activations.
-\end{enumerate}
+\end{itemize}
 
 Real-time scheduling is the process of creating start and finish times for sets of tasks such that
 all timing, precedence, and resource constraints are met.
@@ -178,12 +178,28 @@ The RTDMS have the following tasks model:
         Alarm             & Aperiodic   & 400                   & Hard          \\ \hline
         Check Flood       & 1000        & 30                    & Soft          \\ \hline
         Check Temperature & 1000        & 820                   & Soft          \\ \hline
-        Check Flood       & 1000        & 20                    & Soft          \\
+        Check Humidity    & 1000        & 20                    & Soft          \\
         \hline
     \end{tabular}
 \end{table}
 
-Comentarios sobre cada task especifica.
+\begin{itemize}
+ \item Alarm Task: Responsible to warn that something went wrong in datacenter. The deadline is hard. To assure
+ that the deadline will be fulfilled, this task blocks the execution of the other tasks and monopolizes the hardware.
+ \item Check Flood: This task uses a rain sersor to check if there is a water flood in datacenter. The deadline is
+ soft because if it fails sometimes, it's not a problem. An undetected flood a second and half ago does not reach
+ very high levels in this hiatus. If the tasks detects a failure in the sensors, it activates the alarm task to warn
+ that something is wrong.
+ \item Check Temperature: Responsible to collect the data from the temperature sensors and treat them to provide
+ a realiable measure. The deadline is soft, the temperature will not change abruptly in one second and half. The
+ validation of the temperatures measured can deal with a failure of one sensor (measuring a absurd temperature value
+ or not measuring anything).
+ \item Check Humidity: Collect the data from humidity sensors and process it to provide a valid humidity measure. If the
+ dealine fail sometimes, it's not a problem, humidity needs more time to significantly changes. This task can deal with 
+ failure of one sensor, correcting the measure and providing a correct final result.
+\end{itemize}
+
+
 
 %\begin{center}
 \begin{tikzpicture}[scale=0.2]

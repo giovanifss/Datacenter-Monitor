@@ -59,7 +59,7 @@ Glossary of MMC Terminology. Available: http://msdn.microsoft.com/en-us/library/
 
 It's important to understand what is time and it's related concepts. For this purpose, the definitions provided by
 \cite{kopetz2011real} will be considered: 
-\begin{enumerate}
+\begin{itemize}
  \item The flow of time is a directed time line that extends from the past into the future.
  \item A cut of the time line is called an instant.
  \item Any ideal occurrence that happens at an instant is called an event.
@@ -67,7 +67,7 @@ It's important to understand what is time and it's related concepts. For this pu
  \item An interval on the time line, called a duration, is defined by two events, the start event and the 
 terminating event of the interval.
  \item The instant when a result must be produced is called a deadline.
-\end{enumerate}
+\end{itemize}
 
 In the context of deadlines, \cite{kopetz2011real} also provides a good definition, classifying them in 
 three different ways:
@@ -108,13 +108,13 @@ usually cause several consequences, even death, when missed an important deadlin
 
 For \cite{stankovic1996real} tasks can be classified as:
 
-\begin{enumerate}
+\begin{itemize}
   \item Periodic task: activated every T units. The deadline for each activated instance may be less than, equal to, 
 or greater than the period T.
   \item Aperiodic task: activated at unpredictable times.
   \item Sporadic task: an aperiodic task with the additional constraint that there is a minimum interarrival time 
 between task activations.
-\end{enumerate}
+\end{itemize}
 
 Real-time scheduling is the process of creating start and finish times for sets of tasks such that
 all timing, precedence, and resource constraints are met.
@@ -171,55 +171,79 @@ appropriate interventions and avoid worse situations.
 \subsection{Tasks Model}
 The RTDMS have the following tasks model:
 
-[Tabela com as tasks]
+\begin{table}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Task Name}& \textbf{Period (ms)}& \textbf{Computation Time (ms)}& \textbf{Deadline Type} \\ \hline
+        Alarm             & Aperiodic   & 400                   & Hard          \\ \hline
+        Check Flood       & 1000        & 30                    & Soft          \\ \hline
+        Check Temperature & 1000        & 820                   & Soft          \\ \hline
+        Check Humidity    & 1000        & 20                    & Soft          \\
+        \hline
+    \end{tabular}
+\end{table}
 
-Comentarios sobre cada task especifica.
+\begin{itemize}
+ \item Alarm Task: Responsible to warn that something went wrong in datacenter. The deadline is hard. To assure
+ that the deadline will be fulfilled, this task blocks the execution of the other tasks and monopolizes the hardware.
+ \item Check Flood: This task uses a rain sersor to check if there is a water flood in datacenter. The deadline is
+ soft because if it fails sometimes, it's not a problem. An undetected flood a second and half ago does not reach
+ very high levels in this hiatus. If the tasks detects a failure in the sensors, it activates the alarm task to warn
+ that something is wrong.
+ \item Check Temperature: Responsible to collect the data from the temperature sensors and treat them to provide
+ a realiable measure. The deadline is soft, the temperature will not change abruptly in one second and half. The
+ validation of the temperatures measured can deal with a failure of one sensor (measuring a absurd temperature value
+ or not measuring anything).
+ \item Check Humidity: Collect the data from humidity sensors and process it to provide a valid humidity measure. If the
+ dealine fail sometimes, it's not a problem, humidity needs more time to significantly changes. This task can deal with 
+ failure of one sensor, correcting the measure and providing a correct final result.
+\end{itemize}
+
 
 %\begin{center}
 \begin{tikzpicture}[scale=0.2]
-\tikzstyle{every node}+=[inner sep=0pt]
-\draw [black] (11.2,-13.1) circle (3);
-\draw (11.2,-13.1) node {$I$};
-\draw [black] (11.2,-13.1) circle (2.4);
-\draw [black] (31,-13.1) circle (3);
-\draw (31,-13.1) node {$CT$};
-\draw [black] (31,-33.7) circle (3);
-\draw (31,-33.7) node {$CF$};
-\draw [black] (61.4,-17.3) circle (3);
-\draw (61.4,-17.3) node {$A$};
-\draw [black] (14.2,-13.1) -- (28,-13.1);
-\fill [black] (28,-13.1) -- (27.2,-12.6) -- (27.2,-13.6);
-\draw (21.1,-13.6) node [below] {$1$};
-\draw [black] (9.877,-10.42) arc (234:-54:2.25);
-\draw (11.2,-5.85) node [above] {$0$};
-\fill [black] (12.52,-10.42) -- (13.4,-10.07) -- (12.59,-9.48);
-\draw [black] (29.723,-30.988) arc (-158.8625:-201.1375:21.043);
-\fill [black] (29.72,-30.99) -- (29.9,-30.06) -- (28.97,-30.42);
-\draw (27.81,-23.4) node [left] {$0$};
-\draw [black] (58.45,-17.841) arc (-81.54867:-114.18346:44.476);
-\fill [black] (58.45,-17.84) -- (57.58,-17.46) -- (57.73,-18.45);
-\draw (45.45,-18.51) node [below] {$1$};
-\draw [black] (60.602,-20.19) arc (-19.25615:-104.05246:22.537);
-\fill [black] (60.6,-20.19) -- (59.87,-20.78) -- (60.81,-21.11);
-\draw (51.17,-33.09) node [below] {$1$};
-\draw [black] (32.197,-15.848) arc (19.70004:-19.70004:22.402);
-\fill [black] (32.2,-15.85) -- (32,-16.77) -- (32.94,-16.43);
-\draw (34.01,-23.4) node [right] {$0$};
-\draw [black] (60.077,-14.62) arc (234:-54:2.25);
-\draw (61.4,-10.05) node [above] {$1$};
-\fill [black] (62.72,-14.62) -- (63.6,-14.27) -- (62.79,-13.68);
-\draw [black] (33.909,-12.37) arc (101.78619:62.48167:37.354);
-\fill [black] (33.91,-12.37) -- (34.79,-12.7) -- (34.59,-11.72);
-\draw (47.03,-11.33) node [above] {$0$};
+  \tikzstyle{every node}+=[inner sep=0pt]
+  \draw [black] (11.2,-13.1) circle (3);
+  \draw (11.2,-13.1) node {$IS$};
+  \draw [black] (11.2,-13.1) circle (2.4);
+  \draw [black] (31,-13.1) circle (3);
+  \draw (31,-13.1) node {$CT$};
+  \draw [black] (31,-33.7) circle (3);
+  \draw (31,-33.7) node {$CF$};
+  \draw [black] (61.4,-17.3) circle (3);
+  \draw (61.4,-17.3) node {$AM$};
+  \draw [black] (14.2,-13.1) -- (28,-13.1);
+  \fill [black] (28,-13.1) -- (27.2,-12.6) -- (27.2,-13.6);
+  \draw (21.1,-13.6) node [below] {$1$};
+  \draw [black] (9.877,-10.42) arc (234:-54:2.25);
+  \draw (11.2,-5.85) node [above] {$0$};
+  \fill [black] (12.52,-10.42) -- (13.4,-10.07) -- (12.59,-9.48);
+  \draw [black] (29.723,-30.988) arc (-158.8625:-201.1375:21.043);
+  \fill [black] (29.72,-30.99) -- (29.9,-30.06) -- (28.97,-30.42);
+  \draw (27.81,-23.4) node [left] {$0$};
+  \draw [black] (58.45,-17.841) arc (-81.54867:-114.18346:44.476);
+  \fill [black] (58.45,-17.84) -- (57.58,-17.46) -- (57.73,-18.45);
+  \draw (45.45,-18.51) node [below] {$1$};
+  \draw [black] (60.602,-20.19) arc (-19.25615:-104.05246:22.537);
+  \fill [black] (60.6,-20.19) -- (59.87,-20.78) -- (60.81,-21.11);
+  \draw (51.17,-33.09) node [below] {$1$};
+  \draw [black] (32.197,-15.848) arc (19.70004:-19.70004:22.402);
+  \fill [black] (32.2,-15.85) -- (32,-16.77) -- (32.94,-16.43);
+  \draw (34.01,-23.4) node [right] {$0$};
+  \draw [black] (60.077,-14.62) arc (234:-54:2.25);
+  \draw (61.4,-10.05) node [above] {$1$};
+  \fill [black] (62.72,-14.62) -- (63.6,-14.27) -- (62.79,-13.68);
+  \draw [black] (33.909,-12.37) arc (101.78619:62.48167:37.354);
+  \fill [black] (33.91,-12.37) -- (34.79,-12.7) -- (34.59,-11.72);
+  \draw (47.03,-11.33) node [above] {$0$};
 \end{tikzpicture}
 
-\begin{enumerate}
- \item I: Initial State. Outputs '1' when the system is activated
- \item CT: Check Temperature. Outputs '1' when identifies a temperature above what it should be
- \item CF: Check Flood. Outputs '1' when identifies a considerable amount of water
- \item A: Alarm. Outputs '0' when is turned off manually
-\end{enumerate}
-
+\begin{itemize}
+ \item IS: Initial State. Outputs '1' when the system is activated;
+ \item AM: Alarm. Outputs '0' when is turned off manually;
+ \item CF: Check Flood. Outputs '1' when identifies a considerable amount of water;
+ \item CT: Check Temperature. Outputs '1' when identifies a temperature above what it should be.
+\end{itemize}
 
 \subsubsection{Time Restrictions}
 
@@ -240,19 +264,17 @@ for Rate Monotonic Scheduler is:
 Where \(U\) is the CPU utilization, \(C_i\) is the computation time of the task \(i\), \(P_i\) is the release period (with deadline one period after),
 and \(n\) is the number of processes to be scheduled.
 
-\iffalse
-Enumerate pros elementos da equacao
-\begin{enumerate}
-  \item \(U\).
-  \item Aperiodic task: activated at unpredictable times.
-  \item Sporadic task: an aperiodic task with the additional constraint that there is a minimum interarrival time 
-between task activations.
-\end{enumerate}
-\fi
-
 The set of tasks for RTDMS was mathematically proved as scalable:
 
-[Contas de escalonabilidade das tasks do RTDMS]
+\begin{enumerate}
+ \item Check Flood: \[ C_1 = \frac{C_1}{P_1} = \frac{30}{1500} = 0.0200 \]
+ \item Check Temperature: \[ C_2 = \frac{C_2}{P_2} = \frac{820}{1500} = 0.5467 \]
+ \item Check Humidity: \[ C_3 = \frac{C_3}{P_3} = \frac{20}{1500} = 0.0133 \]
+\end{enumerate}
+
+\[ U = \sum_{i=1}^{3}\frac{C_i}{P_i} = 0.7600 \leq 3(2^\frac{1}{3} - 1) = 0.7797 \]
+
+\[ U = 0.7600 \leq 0.7797 \]
 
 This set of tasks were submitted to simulation in XXXX(nome da ferramenta) and was proved as scalable:
 
@@ -261,11 +283,13 @@ This set of tasks were submitted to simulation in XXXX(nome da ferramenta) and w
 \section{Experiments and Evaluation}
 
 The prototype implementation of RTDMS consisted in the following hardware equipments:
-\begin{enumerate}
+\begin{itemize}
  \item 1x - Arduino Uno
  \item 3x - Temperature and humidity sensors
  \item 1x - Rain sensor
-\end{enumerate}
+ \item 1x - Buzzer
+ \item 1x - Potentiometer
+\end{itemize}
 
 This prototype used the NilRTOS implementation of the Rate Monotonic algorithm available in 
 https://github.com/greiman/NilRTOS-Arduino .
