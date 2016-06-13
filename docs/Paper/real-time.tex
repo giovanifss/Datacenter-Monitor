@@ -199,6 +199,39 @@ The RTDMS have the following tasks model:
  failure of one sensor, correcting the measure and providing a correct final result.
 \end{itemize}
 
+\subsubsection{Time Restrictions}
+
+The RTDMS time restriction is the warning time. In the moment that RTDMS detects an adverse condition,
+the alarm task must be execute instantly. The failure of this task, not warning or warning with delay,
+can cause big problems to the owners of the datacenter, including the loss of all data and equipments.
+
+\subsubsection{Scalability}
+
+The rate monotonic, which assigns a higher priority to a task with shorter period, was considered an
+optimal fixed priority algorithm by \cite{liu1973scheduling}, which proved that for a set of \(n\) periodic 
+tasks with unique periods, a feasible schedule that will always meet deadlines exists if the CPU 
+utilization is below a specific bound (depending on the number of tasks). The schedulability test 
+for Rate Monotonic Scheduler is:
+
+\[ \displaystyle U = \sum_{i=1}^{n}\frac{C_i}{P_i} \leq n(2^\frac{1}{n} - 1) \]
+
+Where \(U\) is the CPU utilization, \(C_i\) is the computation time of the task \(i\), \(P_i\) is the release period (with deadline one period after),
+and \(n\) is the number of processes to be scheduled. The set of tasks for RTDMS was mathematically proved as scalable:
+
+\begin{enumerate}
+ \item Check Flood: \[ C_1 = \frac{C_1}{P_1} = \frac{30}{1500} = 0.0200 \]
+ \item Check Temperature: \[ C_2 = \frac{C_2}{P_2} = \frac{820}{1500} = 0.5467 \]
+ \item Check Humidity: \[ C_3 = \frac{C_3}{P_3} = \frac{20}{1500} = 0.0133 \]
+\end{enumerate}
+
+\[ U = \sum_{i=1}^{3}\frac{C_i}{P_i} = 0.7600 \leq 3(2^\frac{1}{3} - 1) = 0.7797 \]
+
+\[ U = 0.7600 \leq 0.7797 \]
+
+This set of tasks were submitted to simulation in XXXX(nome da ferramenta) and was proved as scalable:
+
+[Imagem da ferramenta mostrando que eh escalonavel]
+
 \subsection{System's Flow}
 The system follows a flow that aims to provide the maximum of autonomy to the task with hardest deadline, executing
 it with total hardware control to ensure that the deadline will be fulfilled. The flow can be seen in the following
@@ -258,41 +291,6 @@ state machine:
  \item Check Temperature (CT): Outputs '1' when identifies a temperature above what it should be;
  \item Check Humidity (CH): Outputs '1' when the humidity is above the acceptable limit.
 \end{itemize}
-
-\subsubsection{Time Restrictions}
-
-The RTDMS time restriction is the warning time. In the moment that RTDMS detects an adverse condition,
-the alarm task must be execute instantly. The failure of this task, not warning or warning with delay,
-can cause big problems to the owners of the datacenter, including the loss of all data and equipments.
-
-\subsubsection{Scalability}
-
-The rate monotonic, which assigns a higher priority to a task with shorter period, was considered an
-optimal fixed priority algorithm by \cite{liu1973scheduling}, which proved that for a set of \(n\) periodic 
-tasks with unique periods, a feasible schedule that will always meet deadlines exists if the CPU 
-utilization is below a specific bound (depending on the number of tasks). The schedulability test 
-for Rate Monotonic Scheduler is:
-
-\[ \displaystyle U = \sum_{i=1}^{n}\frac{C_i}{P_i} \leq n(2^\frac{1}{n} - 1) \]
-
-Where \(U\) is the CPU utilization, \(C_i\) is the computation time of the task \(i\), \(P_i\) is the release period (with deadline one period after),
-and \(n\) is the number of processes to be scheduled.
-
-The set of tasks for RTDMS was mathematically proved as scalable:
-
-\begin{enumerate}
- \item Check Flood: \[ C_1 = \frac{C_1}{P_1} = \frac{30}{1500} = 0.0200 \]
- \item Check Temperature: \[ C_2 = \frac{C_2}{P_2} = \frac{820}{1500} = 0.5467 \]
- \item Check Humidity: \[ C_3 = \frac{C_3}{P_3} = \frac{20}{1500} = 0.0133 \]
-\end{enumerate}
-
-\[ U = \sum_{i=1}^{3}\frac{C_i}{P_i} = 0.7600 \leq 3(2^\frac{1}{3} - 1) = 0.7797 \]
-
-\[ U = 0.7600 \leq 0.7797 \]
-
-This set of tasks were submitted to simulation in XXXX(nome da ferramenta) and was proved as scalable:
-
-[Imagem da ferramenta mostrando que eh escalonavel]
 
 \section{Experiments and Evaluation}
 
