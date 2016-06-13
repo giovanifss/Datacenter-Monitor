@@ -199,52 +199,6 @@ The RTDMS have the following tasks model:
  failure of one sensor, correcting the measure and providing a correct final result.
 \end{itemize}
 
-
-%\begin{center}
-\begin{tikzpicture}[scale=0.2]
-  \tikzstyle{every node}+=[inner sep=0pt]
-  \draw [black] (11.2,-13.1) circle (3);
-  \draw (11.2,-13.1) node {$IS$};
-  \draw [black] (11.2,-13.1) circle (2.4);
-  \draw [black] (31,-13.1) circle (3);
-  \draw (31,-13.1) node {$CT$};
-  \draw [black] (31,-33.7) circle (3);
-  \draw (31,-33.7) node {$CF$};
-  \draw [black] (61.4,-17.3) circle (3);
-  \draw (61.4,-17.3) node {$AM$};
-  \draw [black] (14.2,-13.1) -- (28,-13.1);
-  \fill [black] (28,-13.1) -- (27.2,-12.6) -- (27.2,-13.6);
-  \draw (21.1,-13.6) node [below] {$1$};
-  \draw [black] (9.877,-10.42) arc (234:-54:2.25);
-  \draw (11.2,-5.85) node [above] {$0$};
-  \fill [black] (12.52,-10.42) -- (13.4,-10.07) -- (12.59,-9.48);
-  \draw [black] (29.723,-30.988) arc (-158.8625:-201.1375:21.043);
-  \fill [black] (29.72,-30.99) -- (29.9,-30.06) -- (28.97,-30.42);
-  \draw (27.81,-23.4) node [left] {$0$};
-  \draw [black] (58.45,-17.841) arc (-81.54867:-114.18346:44.476);
-  \fill [black] (58.45,-17.84) -- (57.58,-17.46) -- (57.73,-18.45);
-  \draw (45.45,-18.51) node [below] {$1$};
-  \draw [black] (60.602,-20.19) arc (-19.25615:-104.05246:22.537);
-  \fill [black] (60.6,-20.19) -- (59.87,-20.78) -- (60.81,-21.11);
-  \draw (51.17,-33.09) node [below] {$1$};
-  \draw [black] (32.197,-15.848) arc (19.70004:-19.70004:22.402);
-  \fill [black] (32.2,-15.85) -- (32,-16.77) -- (32.94,-16.43);
-  \draw (34.01,-23.4) node [right] {$0$};
-  \draw [black] (60.077,-14.62) arc (234:-54:2.25);
-  \draw (61.4,-10.05) node [above] {$1$};
-  \fill [black] (62.72,-14.62) -- (63.6,-14.27) -- (62.79,-13.68);
-  \draw [black] (33.909,-12.37) arc (101.78619:62.48167:37.354);
-  \fill [black] (33.91,-12.37) -- (34.79,-12.7) -- (34.59,-11.72);
-  \draw (47.03,-11.33) node [above] {$0$};
-\end{tikzpicture}
-
-\begin{itemize}
- \item IS: Initial State. Outputs '1' when the system is activated;
- \item AM: Alarm. Outputs '0' when is turned off manually;
- \item CF: Check Flood. Outputs '1' when identifies a considerable amount of water;
- \item CT: Check Temperature. Outputs '1' when identifies a temperature above what it should be.
-\end{itemize}
-
 \subsubsection{Time Restrictions}
 
 The RTDMS time restriction is the warning time. In the moment that RTDMS detects an adverse condition,
@@ -262,9 +216,7 @@ for Rate Monotonic Scheduler is:
 \[ \displaystyle U = \sum_{i=1}^{n}\frac{C_i}{P_i} \leq n(2^\frac{1}{n} - 1) \]
 
 Where \(U\) is the CPU utilization, \(C_i\) is the computation time of the task \(i\), \(P_i\) is the release period (with deadline one period after),
-and \(n\) is the number of processes to be scheduled.
-
-The set of tasks for RTDMS was mathematically proved as scalable:
+and \(n\) is the number of processes to be scheduled. The set of tasks for RTDMS was mathematically proved as scalable:
 
 \begin{enumerate}
  \item Check Flood: \[ C_1 = \frac{C_1}{P_1} = \frac{30}{1500} = 0.0200 \]
@@ -279,6 +231,66 @@ The set of tasks for RTDMS was mathematically proved as scalable:
 This set of tasks were submitted to simulation in XXXX(nome da ferramenta) and was proved as scalable:
 
 [Imagem da ferramenta mostrando que eh escalonavel]
+
+\subsection{System's Flow}
+The system follows a flow that aims to provide the maximum of autonomy to the task with hardest deadline, executing
+it with total hardware control to ensure that the deadline will be fulfilled. The flow can be seen in the following
+state machine:
+
+%\begin{center}
+\begin{tikzpicture}[scale=0.2]
+  \tikzstyle{every node}+=[inner sep=0pt]
+  \draw [black] (11.2,-13.1) circle (3);
+  \draw (11.2,-13.1) node {$I$};
+  \draw [black] (11.2,-13.1) circle (2.4);
+  \draw [black] (26.6,-17.3) circle (3);
+  \draw (26.6,-17.3) node {$CT$};
+  \draw [black] (27.7,-29.4) circle (3);
+  \draw (27.7,-29.4) node {$CH$};
+  \draw [black] (61.4,-17.3) circle (3);
+  \draw (61.4,-17.3) node {$A$};
+  \draw [black] (61.4,-17.3) circle (2.4);
+  \draw [black] (17.5,-40.2) circle (3);
+  \draw (17.5,-40.2) node {$CF$};
+  \draw [black] (14.09,-13.89) -- (23.71,-16.51);
+  \fill [black] (23.71,-16.51) -- (23.07,-15.82) -- (22.8,-16.78);
+  \draw (18,-15.77) node [below] {$1$};
+  \draw [black] (9.877,-10.42) arc (234:-54:2.25);
+  \draw (11.2,-5.85) node [above] {$0$};
+  \fill [black] (12.52,-10.42) -- (13.4,-10.07) -- (12.59,-9.48);
+  \draw [black] (26.87,-20.29) -- (27.43,-26.41);
+  \fill [black] (27.43,-26.41) -- (27.85,-25.57) -- (26.86,-25.66);
+  \draw (26.52,-23.42) node [left] {$0$};
+  \draw [black] (58.521,-18.143) arc (-75.18429:-104.81571:56.788);
+  \fill [black] (58.52,-18.14) -- (57.62,-17.86) -- (57.88,-18.83);
+  \draw (44,-20.53) node [below] {$1$};
+  \draw [black] (59.132,-19.263) arc (-50.99187:-89.50673:45.8);
+  \fill [black] (59.13,-19.26) -- (58.2,-19.38) -- (58.83,-20.16);
+  \draw (46.84,-27.31) node [below] {$1$};
+  \draw [black] (60.077,-14.62) arc (234:-54:2.25);
+  \draw (61.4,-10.05) node [above] {$1$};
+  \fill [black] (62.72,-14.62) -- (63.6,-14.27) -- (62.79,-13.68);
+  \draw [black] (13.845,-11.685) arc (116.20194:54.233:44.037);
+  \fill [black] (13.84,-11.68) -- (14.78,-11.78) -- (14.34,-10.88);
+  \draw (37.12,-6.73) node [above] {$0$};
+  \draw [black] (25.64,-31.58) -- (19.56,-38.02);
+  \fill [black] (19.56,-38.02) -- (20.47,-37.78) -- (19.75,-37.09);
+  \draw (22.07,-33.33) node [left] {$0$};
+  \draw [black] (60.056,-19.981) arc (-28.76151:-96.14179:40.247);
+  \fill [black] (60.06,-19.98) -- (59.23,-20.44) -- (60.11,-20.92);
+  \draw (44.53,-36.8) node [below] {$1$};
+  \draw [black] (16.019,-37.597) arc (-156.21436:-247.1294:14.661);
+  \fill [black] (23.74,-18.18) -- (22.8,-18.03) -- (23.19,-18.95);
+  \draw (15.06,-25.39) node [left] {$0$};
+\end{tikzpicture}
+
+\begin{itemize}
+ \item Initial State (I): Outputs '1' when the system is activated;
+ \item Alarm Task (A): Outputs '0' when is turned off manually;
+ \item Check Flood (CF): Outputs '1' when detects a considerable amount of water or a failure in the sensor;
+ \item Check Temperature (CT): Outputs '1' when identifies a temperature above what it should be;
+ \item Check Humidity (CH): Outputs '1' when the humidity is above the acceptable limit.
+\end{itemize}
 
 \section{Experiments and Evaluation}
 
