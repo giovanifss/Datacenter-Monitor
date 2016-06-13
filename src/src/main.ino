@@ -23,6 +23,13 @@
 #define HMD_LIMIT 70        // The limit of humidity, if its above, the system will alert
 
 /*
+ * This is the period for all tasks
+ * The task set was calculated with 1500 ms of period for all tasks
+ * WARNING: Changing this may cause deadline and scalability problems
+ */
+#define TASK_PERIOD 1500
+
+/*
  * This is to allow system to print extra informations
  * Allowing the user to see what is going on behind the scenes
  */
@@ -132,6 +139,8 @@ NIL_WORKING_AREA(waThread2, 384);
 NIL_THREAD(Thread2, arg)
 {
     while (TRUE) {
+        int time = millis();
+
         float temps[QTD_SENSORS];   // To store the temperatures readed by the sensors
 
         for (unsigned char i = 0; i < QTD_SENSORS; i++) {
@@ -155,8 +164,15 @@ NIL_THREAD(Thread2, arg)
             Serial.println("Temp alert"); 
         }
 
-        /* Waits 1 second to wake */
-        nilThdSleepMilliseconds(2000);
+        time = millis() - time;
+        
+        #ifdef DEBUG_RTDMS
+            Serial.print("Tmp - ");
+            Serial.println(TASK_PERIOD - time);
+        #endif
+
+        /* Sleeps the remaining time of period */
+        nilThdSleepMilliseconds(TASK_PERIOD - time);
     }
 }
 
@@ -177,6 +193,8 @@ NIL_WORKING_AREA(waThread3, 384);
 NIL_THREAD(Thread3, arg)
 {
     while (TRUE) {
+        int time = millis();
+
         float hmdts[QTD_SENSORS];   // To store the humidities readed by the sensors
 
         for (unsigned char i = 0; i < QTD_SENSORS; i++) {
@@ -200,8 +218,15 @@ NIL_THREAD(Thread3, arg)
             Serial.println("Humd alert"); 
         }
 
-        /* Waits 1 second to wake */
-        nilThdSleepMilliseconds(2000);
+        time = millis() - time;
+
+        #ifdef DEBUG_RTDMS
+            Serial.print("Hmd - ");
+            Serial.println(TASK_PERIOD - time);
+        #endif
+
+        /* Sleep for the rest of period */
+        nilThdSleepMilliseconds(TASK_PERIOD - time);
     }
 }
 
@@ -218,6 +243,8 @@ NIL_WORKING_AREA(waThread4, 384);
 NIL_THREAD(Thread4, arg)
 {
     while (TRUE) {
+        int time = millis();
+
         if (analogRead(FLOOD_PIN) < WATER_LIMIT){
             Serial.println("Flood detected!");
         } 
@@ -227,8 +254,15 @@ NIL_THREAD(Thread4, arg)
         }
         #endif
 
-        /* Sleep for 1 second */
-        nilThdSleepMilliseconds(1000);
+        time = millis() - time;
+
+        #ifdef DEBUG_RTDMS
+            Serial.print("Fld - ");
+            Serial.println(TASK_PERIOD - time);
+        #endif
+
+        /* Sleeps for the remaining time of period */
+        nilThdSleepMilliseconds(TASK_PERIOD - time);
     }
 }
 
