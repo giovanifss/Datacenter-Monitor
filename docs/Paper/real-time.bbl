@@ -1,5 +1,17 @@
 \begin{thebibliography}{}
 
+\bibitem[Chodrow et~al. 1991]{chodrow1991run}
+Chodrow, S.~E., Jahanian, F., and Donner, M. (1991).
+\newblock Run-time monitoring of real-time systems.
+\newblock In {\em Real-Time Systems Symposium, 1991. Proceedings., Twelfth},
+  pages 74--83. IEEE.
+
+\bibitem[Janpitak and Sathitwiriyawong 2011]{janpitak2011data}
+Janpitak, N. and Sathitwiriyawong, C. (2011).
+\newblock Data center physical security ontology for automated evaluation.
+\newblock In {\em The 2011 International Conference on Security and Management
+  (SAM2011)}, pages 78--84.
+
 \bibitem[Kopetz 2011]{kopetz2011real}
 Kopetz, H. (2011).
 \newblock {\em Real-time systems: design principles for distributed embedded

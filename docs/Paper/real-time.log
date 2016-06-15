@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Arch Linux) (preloaded format=pdflatex 2016.2.16)  14 JUN 2016 20:48
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Arch Linux) (preloaded format=pdflatex 2016.2.16)  14 JUN 2016 21:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -816,22 +816,22 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/it' tried instead on input line 32.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <13> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 39.
-LaTeX Font Info:    Try loading font information for OMS+ptm on input line 63.
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 56.
 
 (/usr/share/texmf-dist/tex/latex/psnfss/omsptm.fd
 File: omsptm.fd 
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 63.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 56.
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] [4] (./real-time.b
 bl) [5] (./real-time.aux) ) 
 Here is how much of TeX's memory you used:
- 14410 strings out of 493054
- 273842 string characters out of 6140586
- 326575 words of memory out of 5000000
- 17640 multiletter control sequences out of 15000+600000
+ 14412 strings out of 493054
+ 273876 string characters out of 6140586
+ 327634 words of memory out of 5000000
+ 17642 multiletter control sequences out of 15000+600000
  23049 words of font info for 48 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  55i,8n,68p,390b,521s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -846,7 +846,7 @@ s/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/urw/ti
 mes/utmb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/s
 hare/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/t
 ype1/urw/times/utmri8a.pfb>
-Output written on real-time.pdf (5 pages, 130527 bytes).
+Output written on real-time.pdf (5 pages, 131642 bytes).
 PDF statistics:
  72 PDF objects out of 1000 (max. 8388607)
  52 compressed objects within 1 object stream

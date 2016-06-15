@@ -38,20 +38,14 @@
 
 \section{Introduction}
 
-Nowadays, most business operations are supported by IT systems. Therefore, their availability is critical to keep
-business running smoothly and continuously. In order to provide high quality IT services, a well-managed data center
-is required to house computer servers, storage systems,network devices, and their associated components. Downtime
-of the data center can be costly resulting in production and business losses so that the high availability requirement of the
-data center is needed.
-Data center always requires a non-stopped service or 24x7 availability. The availability of data center mainly requires the
-protection of computer equipment and personnel. There are some potential hazards which may occur and impact the
-availability of data center. Fire is the most potential hazard which can create severe effects on data center. Fire can occur
-in a data center by mechanical failure, intentional arson, or natural causes.
-Data Center Physical Security Ontology for Automated Evaluation (Abstract).
-
-Data Center is a facility used for housing a large amount of computer and communications equipment maintained by an
-organization for the purpose of handling the data necessary for its operations.
-Glossary of MMC Terminology. Available: http://msdn.microsoft.com/en-us/library/bb246417(VS.85).aspx.
+Data Center is a facility used for house computer servers, storage systems, network devices and their associated components,
+maintained by an organization for the purpose of handling the data necessary for its operations. Their availability is 
+critical to keep business running smoothly and continuously. The downtime of the data center can be costly resulting 
+in production and business losses so that a non-stopped service or 24x7 availability requirement of the data 
+center is needed. To fulfill this availability need, the data center mainly requires protection of computer equipment 
+and personnel because there are some potential hazards which may occur and impact the availability of data center. 
+Fire is the most potential hazard which can create severe effects on data center and can occur in a data center 
+by mechanical failure, intentional arson, or natural causes \cite{janpitak2011data}.
 
 \section{Related Concepts}
 
@@ -104,6 +98,10 @@ temporal behavior under all specified load and fault conditions, it is permissib
 deadline occasionally \cite{kopetz2011real}. \cite{stankovic1996real} also points that hard real-time systems 
 usually cause several consequences, even death, when missed an important deadline.
 
+A computation of a real-time system can be viewed as a sequence of event occurrences. Informally, 
+events represent things that happen in a system. An event occurrence defines a point in time in a
+computation at which a particular instance of an event happens \cite{chodrow1991run}.
+
 \subsection{Tasks}
 
 For \cite{stankovic1996real} tasks can be classified as:
@@ -118,8 +116,6 @@ between task activations.
 
 Real-time scheduling is the process of creating start and finish times for sets of tasks such that
 all timing, precedence, and resource constraints are met.
-
-%Rate monotonic algorithm assigns the highest priority to the most frequent periodic task. \cite{stankovic1996real}
 
 \iffalse
 
@@ -146,10 +142,6 @@ on Mars. This next generation real-time system will be large, complex, distribut
 tive, contain many types of timing constraints, need to operate in a highly nondeterministic
 environment, and evolves over a long system lifetime. We consider this type of real-time system to be
 a dynamic real-time system operating in a nondeterministic environment. \cite{stankovic1990predictability}
-
-A computation of a real-time system can be viewed as a sequence of event occurrences. Informally, 
-events represent things that happen in a system. An event occurrence defines a point in time in a
-computation at which a particular instance of an event happens. \cite{chodrow1991run}
 
 The reliability of a system is the probability that a system will provide the specified service until time t.
 The probability that a system will fail in a given interval of time is expressed by the failure rate, 
@@ -207,11 +199,11 @@ can cause big problems to the owners of the datacenter, including the loss of al
 
 \subsubsection{Scalability}
 
-The rate monotonic, which assigns a higher priority to a task with shorter period, was considered an
-optimal fixed priority algorithm by \cite{liu1973scheduling}, which proved that for a set of \(n\) periodic 
-tasks with unique periods, a feasible schedule that will always meet deadlines exists if the CPU 
-utilization is below a specific bound (depending on the number of tasks). The schedulability test 
-for Rate Monotonic Scheduler is:
+The rate monotonic, which assigns the highest priority to the most frequent periodic task \cite{stankovic1996real}, 
+was considered an optimal fixed priority algorithm by \cite{liu1973scheduling}, which proved that for 
+a set of \(n\) periodic tasks with unique periods, a feasible schedule that will always meet deadlines 
+exists if the CPU utilization is below a specific bound (depending on the number of tasks). The schedulability 
+test for Rate Monotonic Scheduler is:
 
 \[ \displaystyle U = \sum_{i=1}^{n}\frac{C_i}{P_i} \leq n(2^\frac{1}{n} - 1) \]
 
@@ -223,12 +215,13 @@ and \(n\) is the number of processes to be scheduled. The set of tasks for RTDMS
  \item Check Temperature: \[ C_2 = \frac{C_2}{P_2} = \frac{820}{1500} = 0.5467 \]
  \item Check Humidity: \[ C_3 = \frac{C_3}{P_3} = \frac{20}{1500} = 0.0133 \]
 \end{enumerate}
-
-\[ U = \sum_{i=1}^{3}\frac{C_i}{P_i} = 0.7600 \leq 3(2^\frac{1}{3} - 1) = 0.7797 \]
+\begin{itemize}
+ \item Schedulability \[ U = \sum_{i=1}^{3}\frac{C_i}{P_i} = 0.7600 \leq 3(2^\frac{1}{3} - 1) = 0.7797 \]
+\end{itemize}
 
 \[ U = 0.7600 \leq 0.7797 \]
 
-This set of tasks were submitted to simulation in XXXX(nome da ferramenta) and was proved as scalable:
+Besides the mathematical proof, the RTDMS's set of tasks were also submitted to simulation in XXXX(nome da ferramenta):
 
 [Imagem da ferramenta mostrando que eh escalonavel]
 
@@ -303,10 +296,10 @@ The prototype implementation of RTDMS consisted in the following hardware equipm
  \item 1x - Potentiometer
 \end{itemize}
 
-This prototype used the NilRTOS implementation of the Rate Monotonic algorithm available in 
-https://github.com/greiman/NilRTOS-Arduino .
+This prototype used the NilRTOS\footnote{https://github.com/greiman/NilRTOS-Arduino} library, that offers 
+an implementation of the Rate Monotonic algorithm.
 
-The source code for this prototype can be found in https://github.com/giovanifss/Datacenter-Monitor .
+The prototype's source code\footnote{https://github.com/giovanifss/Datacenter-Monitor} is available in github.
 
 \section{Conclusion}
 
