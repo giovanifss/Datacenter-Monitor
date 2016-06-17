@@ -42,18 +42,32 @@
 
 \section{Introduction}
 
-Data Center is a facility used for house computer servers, storage systems, network devices and their associated components,
-maintained by an organization for the purpose of handling the data necessary for its operations. Their availability is 
-critical to keep business running smoothly and continuously. The downtime of the data center can be costly resulting 
-in production and business losses so that a non-stopped service or 24x7 availability requirement is needed. To fulfill 
-this need, the data center mainly requires protection of computer equipment and personnel because there are some potential 
-hazards which may occur and impact the availability. The most potential hazard is the fire, which causes severe effects on 
-data center and can occur by mechanical failure, intentional arson, or natural causes \cite{janpitak2011data}.
+A data center is a facility used to accommodate computer systems and associated components, such as telecommunications, 
+network devices and storage systems. It usually includes redundant or backup  power supplies, redundant data communications 
+connections, air conditioning, fire suppression and security devices. The data center is maintained by an organization for 
+the purpose of handling the data necessary for its operations \cite{janpitak2011data} \cite{hassan2013temperature}.
 
-\begin{table}[]
+Because of technology compaction, the information technology (IT) industry has experienced a large decrease
+in the floor space required to achieve a constant quantity of computing and storage capability. However, 
+power density and heat dissipation within the footprint of computer and telecommunications hardware have 
+increased significantly. The heat dissipated in these systems is exhausted to the room, which must be
+maintained at acceptable temperatures for reliable operation of the equipment. Data center equipment may 
+comprise several hundred to several thousand microprocessors. The cooling of computer and telecommunications 
+equipment rooms has thus become a major challenge \cite{schmidt2005challenges}.
+
+In this scenario of challenges, the availability of the data center must be preserved. It is a critical part to keep business 
+running smoothly and continuously. A downtime can be costly resulting in production and business losses so that a non-stopped 
+service or 24x7 availability requirement is needed. Although differences of opinion still exist in how to handle a data center, 
+there is an agreement that the data center mainly requires protection of computer equipment and personnel to avoid troubles
+from the potential hazards which may occur and impact the availability. Table \ref{table:temperature} presents the difference
+of opinion for the most known vendors about the temperature of the data center \cite{ashrae9} \cite{moss2011data} 
+\cite{packard2013applying} \cite{ciscoDatacenter} \cite{moss2009data}.
+
+Assure the availability of a data center includes several factors. This paper focus in the warning time of a 
+\begin{table}[!htbp]
 \centering
 \caption{Data Center Temperatures}
-\label{Data center temperatures}
+\label{table:temperature}
 \begin{tabular}{|c|c|c|c|}
 \hline
 \textbf{Vendor} & \textbf{Low (C\degree /F\degree )}       & \textbf{High (C\degree /F\degree )}      & \textbf{Optimal (C\degree /F\degree )} \\ \hline
@@ -66,19 +80,18 @@ IBM    & 18/64.4         & 27/80.6         & -             \\ \hline
 Oracle & 21/70           & 23/74           & 22/72         \\ \hline
 \end{tabular}
 \end{table}
+\iffalse
+The technology advances with servers and networking equipment enables the equipment that filled a room, can now be placed 
+in a single rack; creating excessive power and heat problems \cite{hassan2013temperature}.
+
+On average, existing data centres have required around twice the amount of cooling but many of them are still facing 
+problems with high temperature zones created within the data centres \cite{hassan2013temperature}.
 
 The American Society of Heating, Refrigerating, and Air-Conditioning Engineers recommend a low end temperature of
 18\degree C (64.4\degree F), a high end temperature of 27\degree C (80.6\degree F), low end moisture of 5.5\degree C 
 (41.9\degree F) dew point and a high end moisture of 60\% relative humidity and 15\degree C (59\degree F) dew 
 point \cite{ashrae9}.
-
-Because of technology compaction, the information technology (IT) industry has experienced a large decrease
-in the floor space required to achieve a constant quantity of computing and storage capability. However, 
-power density and heat dissipation within the footprint of computer and telecommunications hardware have 
-increased significantly. The heat dissipated in these systems is exhausted to the room, which must be
-maintained at acceptable temperatures for reliable operation of the equipment. Data center equipment may 
-comprise several hundred to several thousand microprocessors. The cooling of computer and telecommunications 
-equipment rooms has thus become a major challenge \cite{schmidt2005challenges}.
+\fi
 
 \section{Related Concepts}
 

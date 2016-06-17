@@ -9,6 +9,9 @@
 \usepackage[utf8]{inputenc}  
 % UTF-8 encoding is recommended by ShareLaTex
 
+% Pra Deixar a tabela onde eu quero
+\usepackage{float}
+
 % To put links in footnote
 % \usepackage{hyperref}
 % Para usar o simbolo de graus
@@ -42,45 +45,10 @@
 
 \section{Introduction}
 
-Data Center is a facility used for house computer servers, storage systems, network devices and their associated components,
-maintained by an organization for the purpose of handling the data necessary for its operations. Their availability is 
-critical to keep business running smoothly and continuously. The downtime of the data center can be costly resulting 
-in production and business losses so that a non-stopped service or 24x7 availability requirement is needed. To fulfill 
-this need, the data center mainly requires protection of computer equipment and personnel because there are some potential 
-hazards which may occur and impact the availability. The most potential hazard is the fire, which causes severe effects on 
-data center and can occur by mechanical failure, intentional arson, or natural causes \cite{janpitak2011data}.
-
-%A data center is a facility used to accommodate computer systems and associated components, such as telecommunications 
-%and storage systems. It usually includes redundant or backup  power supplies, redundant data communications connections, 
-%air conditioning, fire suppression and security devices. The technology advances with servers and networking equipment enables the equipment that filled a room, can now be placed 
-%in a single rack; creating excessive power and heat problems \cite{hassan2013temperature}.
-
-On average, existing data centres have required around twice the amount of cooling but many of them are still facing 
-problems with high temperature zones created within the data centres \cite{hassan2013temperature}.
-
-Most vendors recommend a temperature for data center \cite{ashrae9} \cite{moss2011data} 
-\cite{packard2013applying} \cite{ciscoDatacenter} \cite{moss2009data}:
-\begin{table}[!htbp]
-\centering
-\caption{Data Center Temperatures}
-\label{Data center temperatures}
-\begin{tabular}{|c|c|c|c|}
-\hline
-\textbf{Vendor} & \textbf{Low (C\degree /F\degree )}       & \textbf{High (C\degree /F\degree )}      & \textbf{Optimal (C\degree /F\degree )} \\ \hline
-ASHRAE & 18/64.4         & 27/80.6         & -             \\ \hline
-Cisco  & 18/64.4         & 27/80.6         & -             \\ \hline
-Google & -               & -               & 26.7/80       \\ \hline
-Dell   & 24+/Upper 70 F\degree  & 26+/Lower 80 F\degree  & -             \\ \hline
-HP     & 18/64.4         & 27/80.6         & -             \\ \hline
-IBM    & 18/64.4         & 27/80.6         & -             \\ \hline
-Oracle & 21/70           & 23/74           & 22/72         \\ \hline
-\end{tabular}
-\end{table}
-
-The American Society of Heating, Refrigerating, and Air-Conditioning Engineers recommend a low end temperature of
-18\degree C (64.4\degree F), a high end temperature of 27\degree C (80.6\degree F), low end moisture of 5.5\degree C 
-(41.9\degree F) dew point and a high end moisture of 60\% relative humidity and 15\degree C (59\degree F) dew 
-point \cite{ashrae9}.
+A data center is a facility used to accommodate computer systems and associated components, such as telecommunications, 
+network devices and storage systems. It usually includes redundant or backup  power supplies, redundant data communications 
+connections, air conditioning, fire suppression and security devices. The data center is maintained by an organization for 
+the purpose of handling the data necessary for its operations \cite{janpitak2011data} \cite{hassan2013temperature}.
 
 Because of technology compaction, the information technology (IT) industry has experienced a large decrease
 in the floor space required to achieve a constant quantity of computing and storage capability. However, 
@@ -89,6 +57,52 @@ increased significantly. The heat dissipated in these systems is exhausted to th
 maintained at acceptable temperatures for reliable operation of the equipment. Data center equipment may 
 comprise several hundred to several thousand microprocessors. The cooling of computer and telecommunications 
 equipment rooms has thus become a major challenge \cite{schmidt2005challenges}.
+
+In this scenario of challenges, the availability of the data center must be preserved. It is a critical part to keep business 
+running smoothly and continuously. A downtime can be costly resulting in production and business losses so that a non-stopped 
+service or 24x7 availability requirement is needed. Although differences of opinion still exist in how to handle a data center, 
+there is an agreement that the data center mainly requires protection of computer equipment and personnel to avoid troubles
+from the potential hazards which may occur and impact the availability. The following table presents the difference
+of opinion for the most known vendors about the temperature of the data center \cite{ashrae9} \cite{moss2011data} 
+\cite{packard2013applying} \cite{moss2009data}:
+
+\begin{table}[H]
+\centering
+\caption{Data Center Temperatures}
+\label{table:temperature}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Vendor} & \textbf{Low (C\degree /F\degree )}       & \textbf{High (C\degree /F\degree )}      & \textbf{Optimal (C\degree /F\degree )} \\ \hline
+ASHRAE & 18/64.4         & 27/80.6         & -             \\ \hline
+Google & -               & -               & 26.7/80       \\ \hline
+Dell   & 24+/Upper 70 F\degree  & 26+/Lower 80 F\degree  & -             \\ \hline
+HP     & 18/64.4         & 27/80.6         & -             \\ \hline
+Oracle & 21/70           & 23/74           & 22/72         \\ \hline
+\end{tabular}
+\end{table}
+
+To assure the availability, a critical element that must be present in any control system is a way to warn that something is 
+going wrong inside the room. It is an importante task that must occur as quickly as possible, increasing the risk of loosing
+data or equipments every second of delay. This paper focus in proof that is possible to use a real time system to monitor the
+data center and warn at any signal of trouble.
+
+To achieve this result, this work is divided in 5 sections. The second section conceptualizes important elements for the proof. 
+The third explains and present the RTDMS - Real Time Data Center Monitor System -, exposing its task model, proofing the 
+scalability and describing the hardware requirements and configurations. The section four presents the results obtained in
+tests and experiments and the fifth section talk about the conclusions retrieved from this work.
+
+\iffalse
+The technology advances with servers and networking equipment enables the equipment that filled a room, can now be placed 
+in a single rack; creating excessive power and heat problems \cite{hassan2013temperature}.
+
+On average, existing data centres have required around twice the amount of cooling but many of them are still facing 
+problems with high temperature zones created within the data centres \cite{hassan2013temperature}.
+
+The American Society of Heating, Refrigerating, and Air-Conditioning Engineers recommend a low end temperature of
+18\degree C (64.4\degree F), a high end temperature of 27\degree C (80.6\degree F), low end moisture of 5.5\degree C 
+(41.9\degree F) dew point and a high end moisture of 60\% relative humidity and 15\degree C (59\degree F) dew 
+point \cite{ashrae9}.
+\fi
 
 \section{Related Concepts}
 

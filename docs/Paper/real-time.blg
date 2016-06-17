@@ -3,46 +3,44 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: real-time.aux
 The style file: sbc.bst
 Database file #1: real-time.bib
-Warning--empty journal in ciscoDatacenter
-You've used 14 entries,
+You've used 13 entries,
             1935 wiz_defined-function locations,
-            550 strings with 5530 characters,
-and the built_in function-call counts, 4956 in all, are:
-= -- 493
-> -- 160
-< -- 12
-+ -- 52
-- -- 50
-* -- 381
-:= -- 870
-add.period$ -- 41
-call.type$ -- 14
-change.case$ -- 93
-chr.to.int$ -- 14
-cite$ -- 15
-duplicate$ -- 210
-empty$ -- 367
-format.name$ -- 70
-if$ -- 973
+            546 strings with 5466 characters,
+and the built_in function-call counts, 4692 in all, are:
+= -- 469
+> -- 153
+< -- 11
++ -- 50
+- -- 48
+* -- 363
+:= -- 820
+add.period$ -- 39
+call.type$ -- 13
+change.case$ -- 87
+chr.to.int$ -- 13
+cite$ -- 13
+duplicate$ -- 197
+empty$ -- 347
+format.name$ -- 67
+if$ -- 924
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 15
-newline$ -- 71
-num.names$ -- 42
-pop$ -- 89
+missing$ -- 14
+newline$ -- 67
+num.names$ -- 39
+pop$ -- 82
 preamble$ -- 1
-purify$ -- 95
+purify$ -- 89
 quote$ -- 0
-skip$ -- 163
+skip$ -- 152
 stack$ -- 0
-substring$ -- 337
+substring$ -- 325
 swap$ -- 26
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 80
-warning$ -- 1
-while$ -- 44
+type$ -- 74
+warning$ -- 0
+while$ -- 42
 width$ -- 0
-write$ -- 174
-(There was 1 warning)
+write$ -- 164
