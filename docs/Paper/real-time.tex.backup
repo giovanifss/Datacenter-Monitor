@@ -9,6 +9,11 @@
 \usepackage[utf8]{inputenc}  
 % UTF-8 encoding is recommended by ShareLaTex
 
+% To put links in footnote
+% \usepackage{hyperref}
+% Para usar o simbolo de graus
+\usepackage{gensymb}
+
 \usepackage{amsmath}
 
 % Desenho do grafo
@@ -35,17 +40,45 @@
 \begin{resumo} 
 \end{resumo}
 
-
 \section{Introduction}
 
 Data Center is a facility used for house computer servers, storage systems, network devices and their associated components,
 maintained by an organization for the purpose of handling the data necessary for its operations. Their availability is 
 critical to keep business running smoothly and continuously. The downtime of the data center can be costly resulting 
-in production and business losses so that a non-stopped service or 24x7 availability requirement of the data 
-center is needed. To fulfill this availability need, the data center mainly requires protection of computer equipment 
-and personnel because there are some potential hazards which may occur and impact the availability of data center. 
-Fire is the most potential hazard which can create severe effects on data center and can occur in a data center 
-by mechanical failure, intentional arson, or natural causes \cite{janpitak2011data}.
+in production and business losses so that a non-stopped service or 24x7 availability requirement is needed. To fulfill 
+this need, the data center mainly requires protection of computer equipment and personnel because there are some potential 
+hazards which may occur and impact the availability. The most potential hazard is the fire, which causes severe effects on 
+data center and can occur by mechanical failure, intentional arson, or natural causes \cite{janpitak2011data}.
+
+\begin{table}[]
+\centering
+\caption{Data Center Temperatures}
+\label{Data center temperatures}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Vendor} & \textbf{Low (C\degree /F\degree )}       & \textbf{High (C\degree /F\degree )}      & \textbf{Optimal (C\degree /F\degree )} \\ \hline
+ASHRAE & 18/64.4         & 27/80.6         & -             \\ \hline
+Cisco  & 18/64.4         & 27/80.6         & -             \\ \hline
+Google & -               & -               & 26.7/80       \\ \hline
+Dell   & 24+/Upper 70 F\degree  & 26+/Lower 80 F\degree  & -             \\ \hline
+HP     & 18/64.4         & 27/80.6         & -             \\ \hline
+IBM    & 18/64.4         & 27/80.6         & -             \\ \hline
+Oracle & 21/70           & 23/74           & 22/72         \\ \hline
+\end{tabular}
+\end{table}
+
+The American Society of Heating, Refrigerating, and Air-Conditioning Engineers recommend a low end temperature of
+18\degree C (64.4\degree F), a high end temperature of 27\degree C (80.6\degree F), low end moisture of 5.5\degree C 
+(41.9\degree F) dew point and a high end moisture of 60\% relative humidity and 15\degree C (59\degree F) dew 
+point \cite{ashrae9}.
+
+Because of technology compaction, the information technology (IT) industry has experienced a large decrease
+in the floor space required to achieve a constant quantity of computing and storage capability. However, 
+power density and heat dissipation within the footprint of computer and telecommunications hardware have 
+increased significantly. The heat dissipated in these systems is exhausted to the room, which must be
+maintained at acceptable temperatures for reliable operation of the equipment. Data center equipment may 
+comprise several hundred to several thousand microprocessors. The cooling of computer and telecommunications 
+equipment rooms has thus become a major challenge \cite{schmidt2005challenges}.
 
 \section{Related Concepts}
 
@@ -77,6 +110,11 @@ three different ways:
 % of the system behavior depends not only on the logical results of the computations, but also on 
 % the physical time when these results are produced. \cite{ayeni2012real} completes this definition stating
 % that correctness of a system refers to the behaviour of the system over time.
+%@article{ayeni2012real,
+%  title={Real-Time Embedded System},
+%  author={Ayeni, Bakare K},
+%  year={2012}
+%}
 
 For \cite{kopetz2011real}, a real-time computer system is a computer system where the correctness 
 of the system behavior depends not only on the logical results of the computations, but also on 
