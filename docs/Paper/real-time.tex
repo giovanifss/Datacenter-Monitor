@@ -225,6 +225,9 @@ sensors for temperature, humidity and flood, the RTDMS is able to quickly discov
 in a datacenter and reduce the warning time, so the support team have more time to take the
 appropriate interventions and avoid worse situations.
 
+The Rate Monotonic algorithm implementation used is the one provided by the NilRTOS\footnote{https://github.com/greiman/NilRTOS-Arduino} 
+library, and the source code of the prototype is available at github\footnote{https://github.com/giovanifss/Datacenter-Monitor}.
+
 \subsection{Tasks Model}
 The RTDMS have the following tasks model:
 
@@ -346,6 +349,7 @@ state machine:
  \item Check Humidity (CH): Outputs '1' when the humidity is above the acceptable limit.
 \end{itemize}
 
+\iffalse
 \subsection{Hardware Requirements}
 
 The prototype implementation of RTDMS consisted in the following hardware equipments:
@@ -359,9 +363,7 @@ The prototype implementation of RTDMS consisted in the following hardware equipm
 
 
 [negocio do arduino]
-
-The Rate Monotonic algorithm used is the implementation provided by the NilRTOS\footnote{https://github.com/greiman/NilRTOS-Arduino} 
-library, and the source code of the prototype is available at github\footnote{https://github.com/giovanifss/Datacenter-Monitor}.
+\fi
 
 \section{Experiments and Evaluation}
 
