@@ -233,9 +233,9 @@ The RTDMS have the following tasks model:
         \hline
         \textbf{Task Name}& \textbf{Period (ms)}& \textbf{Computation Time (ms)}& \textbf{Deadline Type} \\ \hline
         Alarm             & Aperiodic   & 400                   & Hard          \\ \hline
-        Check Flood       & 1000        & 30                    & Soft          \\ \hline
-        Check Temperature & 1000        & 820                   & Soft          \\ \hline
-        Check Humidity    & 1000        & 20                    & Soft          \\
+        Check Flood       & 1500        & 30                    & Soft          \\ \hline
+        Check Temperature & 1500        & 820                   & Soft          \\ \hline
+        Check Humidity    & 1500        & 20                    & Soft          \\
         \hline
     \end{tabular}
 \end{table}
@@ -357,14 +357,64 @@ The prototype implementation of RTDMS consisted in the following hardware equipm
  \item 1x - Potentiometer
 \end{itemize}
 
+
+[negocio do arduino]
+
 The Rate Monotonic algorithm used is the implementation provided by the NilRTOS\footnote{https://github.com/greiman/NilRTOS-Arduino} 
 library, and the source code of the prototype is available at github\footnote{https://github.com/giovanifss/Datacenter-Monitor}.
 
 \section{Experiments and Evaluation}
 
-Besides the mathematical proof, the RTDMS's set of tasks were also submitted to simulation in XXXX(nome da ferramenta):
+The RTDMS was tested in several situations with different focus on the tests. The results for specific tests are shown below:
 
-[Imagem da ferramenta mostrando que eh escalonavel]
+\subsection{Task Set Schedulability}
+
+The task set for RTDMS was simulated in Cheddar scheduling simulator tool\footnote{http://beru.univ-brest.fr/~singhoff/cheddar/}.
+Being submitted to 15 tests, the result for all of them is: No deadline missed in the computed scheduling: the task set is 
+schedulable if you computed the scheduling on the feasibility interval. The following pattern was achieved for all tests with 
+no unforeseen problems:
+\begin{itemize}
+ \item Check Temperature Task, with the highest priority, reaches the CPU at the beggining of the period, represented by
+\(t_0\). After the time needed to execute the task (820ms), Check Temperature leaves the CPU at \(t_{820}\);
+ \item At the point of time \(t_{820}\), Check Humidity Task assumes the CPU. Computing for 20ms, leaves the processor at 
+\(t_{840}\);
+ \item Check Flood Task, with the lowest priority, get access to CPU at \(t_{840}\) and computes until \(t_{870}\) finishing
+the computation for the set of tasks.
+ \item The CPU became inactive until the start of the next period, at \(t_{1500}\).
+\end{itemize}
+
+This pattern was obtained in all executions of the test, even in the calculation of the worst case for all tasks, proving
+that this set of task is schedulable with a time gap (idle time) of 630ms.
+
+\subsection{Fault Tolerance}
+The RTDMS's fault tolerance subsystem proved reliability for fault of one of the three sensors. The check humidity and check
+temperature tasks were submitted to two different tests:
+
+\subsubsection{Sensor Absence}
+The Sensor Absence test consists of disconect or change the wire connections of a sensor in hardware, making the result
+obtained from a read from sensor be an absurd value or not be a number. The expected behavior of the system was to identify
+a strange conduct by the sensor and ignore its measure for this cicle of temperature or humidity check. Both tasks were 
+submitted to this test three times, each of them with a different sensor being removed or altered. The subsystem's actions 
+were logged and the results were uniform.
+
+Firstly, the subsystem calculates the difference of the values acquired from the sensors from the mean. Then it detect
+that one sensor have a bigger difference than others. After check that this difference is beyond of the acceptable limit,
+it recomputes the mean for the sensors that presented a valid measure. The subsystem consider all sensors as susceptible 
+of failure, bringing success in all tests, proofing that it's flexible to identify any sensor fault.
+
+On the other hand, if two or more sensors were compromised, the system fails to detect the correct temperature or humidity 
+and outputs a invalid value. This limit can be extended adding more sensors because the way that the subsystem checks for 
+error have the property that the more sensors, more reliable is the system.
+
+\subsubsection{Controlled Sensor}
+This test main goal is to see whether the system is able to detect a valid temperature measure but incorrect. It consists of
+manipulating the sensor measure to valid but incorrect values and monitor the system behavior step by step. The test was 
+repeated three times, each of them with a different sensor being manipulated. The subsystem had the same behavior as the
+previous test, detecting an fault by computing the difference from the mean.
+
+The subsystem presented a success for all repetitions of the test, being able to deal with one sensor failure in each
+iteration. And as expected, the subsystem fails to provide a reliable measure when two or more sensors present an 
+misleading measure.
 
 \section{Conclusion}
 

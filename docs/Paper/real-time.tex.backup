@@ -9,6 +9,9 @@
 \usepackage[utf8]{inputenc}  
 % UTF-8 encoding is recommended by ShareLaTex
 
+% Pra Deixar a tabela onde eu quero
+\usepackage{float}
+
 % To put links in footnote
 % \usepackage{hyperref}
 % Para usar o simbolo de graus
@@ -59,12 +62,11 @@ In this scenario of challenges, the availability of the data center must be pres
 running smoothly and continuously. A downtime can be costly resulting in production and business losses so that a non-stopped 
 service or 24x7 availability requirement is needed. Although differences of opinion still exist in how to handle a data center, 
 there is an agreement that the data center mainly requires protection of computer equipment and personnel to avoid troubles
-from the potential hazards which may occur and impact the availability. Table \ref{table:temperature} presents the difference
+from the potential hazards which may occur and impact the availability. The following table presents the difference
 of opinion for the most known vendors about the temperature of the data center \cite{ashrae9} \cite{moss2011data} 
-\cite{packard2013applying} \cite{ciscoDatacenter} \cite{moss2009data}.
+\cite{packard2013applying} \cite{moss2009data}:
 
-Assure the availability of a data center includes several factors. This paper focus in the warning time of a 
-\begin{table}[!htbp]
+\begin{table}[H]
 \centering
 \caption{Data Center Temperatures}
 \label{table:temperature}
@@ -72,14 +74,23 @@ Assure the availability of a data center includes several factors. This paper fo
 \hline
 \textbf{Vendor} & \textbf{Low (C\degree /F\degree )}       & \textbf{High (C\degree /F\degree )}      & \textbf{Optimal (C\degree /F\degree )} \\ \hline
 ASHRAE & 18/64.4         & 27/80.6         & -             \\ \hline
-Cisco  & 18/64.4         & 27/80.6         & -             \\ \hline
 Google & -               & -               & 26.7/80       \\ \hline
 Dell   & 24+/Upper 70 F\degree  & 26+/Lower 80 F\degree  & -             \\ \hline
 HP     & 18/64.4         & 27/80.6         & -             \\ \hline
-IBM    & 18/64.4         & 27/80.6         & -             \\ \hline
 Oracle & 21/70           & 23/74           & 22/72         \\ \hline
 \end{tabular}
 \end{table}
+
+To assure the availability, a critical element that must be present in any control system is a way to warn that something is 
+going wrong inside the room. It is an importante task that must occur as quickly as possible, increasing the risk of loosing
+data or equipments every second of delay. This paper focus in proof that is possible to use a real time system to monitor the
+data center and warn at any signal of trouble.
+
+To achieve this result, this work is divided in 5 sections. The second section conceptualizes important elements for the proof. 
+The third explains and present the RTDMS - Real Time Data Center Monitor System -, exposing its task model, proofing the 
+scalability and describing the hardware requirements and configurations. The section four presents the results obtained in
+tests and experiments and the fifth section talk about the conclusions retrieved from this work.
+
 \iffalse
 The technology advances with servers and networking equipment enables the equipment that filled a room, can now be placed 
 in a single rack; creating excessive power and heat problems \cite{hassan2013temperature}.
@@ -94,6 +105,9 @@ point \cite{ashrae9}.
 \fi
 
 \section{Related Concepts}
+
+This section aims to conceptualize important topics about real time systems for complete understanding of the data center 
+monitor and the results achieved by this paper.
 
 \subsection{Time}
 
@@ -214,14 +228,14 @@ appropriate interventions and avoid worse situations.
 \subsection{Tasks Model}
 The RTDMS have the following tasks model:
 
-\begin{table}
+\begin{table}[H]
     \begin{tabular}{|c|c|c|c|}
         \hline
         \textbf{Task Name}& \textbf{Period (ms)}& \textbf{Computation Time (ms)}& \textbf{Deadline Type} \\ \hline
         Alarm             & Aperiodic   & 400                   & Hard          \\ \hline
-        Check Flood       & 1000        & 30                    & Soft          \\ \hline
-        Check Temperature & 1000        & 820                   & Soft          \\ \hline
-        Check Humidity    & 1000        & 20                    & Soft          \\
+        Check Flood       & 1500        & 30                    & Soft          \\ \hline
+        Check Temperature & 1500        & 820                   & Soft          \\ \hline
+        Check Humidity    & 1500        & 20                    & Soft          \\
         \hline
     \end{tabular}
 \end{table}
@@ -271,10 +285,6 @@ and \(n\) is the number of processes to be scheduled. The set of tasks for RTDMS
 \end{itemize}
 
 \[ U = 0.7600 \leq 0.7797 \]
-
-Besides the mathematical proof, the RTDMS's set of tasks were also submitted to simulation in XXXX(nome da ferramenta):
-
-[Imagem da ferramenta mostrando que eh escalonavel]
 
 \subsection{System's Flow}
 The system follows a flow that aims to provide the maximum of autonomy to the task with hardest deadline, executing
@@ -336,7 +346,7 @@ state machine:
  \item Check Humidity (CH): Outputs '1' when the humidity is above the acceptable limit.
 \end{itemize}
 
-\section{Experiments and Evaluation}
+\subsection{Hardware Requirements}
 
 The prototype implementation of RTDMS consisted in the following hardware equipments:
 \begin{itemize}
@@ -347,10 +357,56 @@ The prototype implementation of RTDMS consisted in the following hardware equipm
  \item 1x - Potentiometer
 \end{itemize}
 
-This prototype used the NilRTOS\footnote{https://github.com/greiman/NilRTOS-Arduino} library, that offers 
-an implementation of the Rate Monotonic algorithm.
 
-The prototype's source code\footnote{https://github.com/giovanifss/Datacenter-Monitor} is available in github.
+[negocio do arduino]
+
+The Rate Monotonic algorithm used is the implementation provided by the NilRTOS\footnote{https://github.com/greiman/NilRTOS-Arduino} 
+library, and the source code of the prototype is available at github\footnote{https://github.com/giovanifss/Datacenter-Monitor}.
+
+\section{Experiments and Evaluation}
+
+The RTDMS was tested in several situations with different focus on the tests. The results for specific tests are shown below:
+
+\subsection{Task Set Schedulability}
+
+The task set for RTDMS was simulated in Cheddar scheduling simulator tool\footnote{http://beru.univ-brest.fr/~singhoff/cheddar/}.
+Being submitted to 15 tests, the result for all of them is: No deadline missed in the computed scheduling: the task set is 
+schedulable if you computed the scheduling on the feasibility interval. The following pattern was achieved for all tests with 
+no unforeseen problems:
+\begin{itemize}
+ \item Check Temperature Task, with the highest priority, reaches the CPU at the beggining of the period, represented by
+\(t_0\). After the time needed to execute the task (820ms), Check Temperature leaves the CPU at \(t_{820}\);
+ \item At the point of time \(t_{820}\), Check Humidity Task assumes the CPU. Computing for 20ms, leaves the processor at 
+\(t_{840}\);
+ \item Check Flood Task, with the lowest priority, get access to CPU at \(t_{840}\) and computes until \(t_{870}\) finishing
+the computation for the set of tasks.
+ \item The CPU became inactive until the start of the next period, at \(t_{1500}\).
+\end{itemize}
+
+This pattern was obtained in all executions of the test, even in the calculation of the worst case for all tasks, proving
+that this set of task is schedulable with a time gap (idle time) of 630ms.
+
+\subsection{Fault Tolerance}
+The RTDMS's fault tolerance subsystem proved reliability for fault of one of the three sensors. The check humidity and check
+temperature tasks were submitted to two different tests:
+
+\subsubsection{Sensor Absence}
+The Sensor Absence test consists of disconect or change the wire connections of a sensor in hardware, making the result
+obtained from a read from sensor be an absurd value or not be a number. The expected behavior of the system was to identify
+a strange conduct by the sensor and ignore its measure for this cicle of temperature or humidity check. Both tasks were 
+submitted to this test 3 times, each of them with a different sensor being removed or altered. The subsystem's actions 
+were logged and the results were uniform.
+
+Firstly, the subsystem calculates the difference of the values acquired from the sensors from the mean. Then it detect
+that one sensor have a bigger difference than others. After check that this difference is beyond of the acceptable limit,
+it recomputes the mean for the sensors that presented a valid measure. The subsystem consider all sensors as susceptible 
+of failure, bringing success in all tests, proofing that it's flexible to identify any sensor fault.
+
+On the other hand, if two or more sensors were compromised, the system fails to detect the correct temperature or humidity 
+and outputs a invalid value. This limit can be extended adding more sensors because the way that the subsystem checks for 
+error have the property that the more sensors, more reliable is the system.
+
+
 
 \section{Conclusion}
 
