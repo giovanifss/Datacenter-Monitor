@@ -38,10 +38,12 @@
 \maketitle
 
 \begin{abstract}
+Data center, a facility used to accommodate computer systems and associated components and a critical part to keep business
+running smoothly and continuously, needs to be a non-stopped service or have 24x7 availability because a downtime can cause
+several losses. It's crucial to know everything that is going on inside the data center and be alerted at any signal of danger.
+For this purpose, this paper aims to proof that a real time system can solve the warning time problem of the data center.
 \end{abstract}
-     
-\begin{resumo} 
-\end{resumo}
+
 
 \section{Introduction}
 
@@ -225,6 +227,9 @@ sensors for temperature, humidity and flood, the RTDMS is able to quickly discov
 in a datacenter and reduce the warning time, so the support team have more time to take the
 appropriate interventions and avoid worse situations.
 
+The Rate Monotonic algorithm implementation used is the one provided by the NilRTOS\footnote{https://github.com/greiman/NilRTOS-Arduino} 
+library, and the source code of the prototype is available at github\footnote{https://github.com/giovanifss/Datacenter-Monitor}.
+
 \subsection{Tasks Model}
 The RTDMS have the following tasks model:
 
@@ -346,6 +351,7 @@ state machine:
  \item Check Humidity (CH): Outputs '1' when the humidity is above the acceptable limit.
 \end{itemize}
 
+\iffalse
 \subsection{Hardware Requirements}
 
 The prototype implementation of RTDMS consisted in the following hardware equipments:
@@ -359,9 +365,7 @@ The prototype implementation of RTDMS consisted in the following hardware equipm
 
 
 [negocio do arduino]
-
-The Rate Monotonic algorithm used is the implementation provided by the NilRTOS\footnote{https://github.com/greiman/NilRTOS-Arduino} 
-library, and the source code of the prototype is available at github\footnote{https://github.com/giovanifss/Datacenter-Monitor}.
+\fi
 
 \section{Experiments and Evaluation}
 
@@ -394,7 +398,7 @@ temperature tasks were submitted to two different tests:
 The Sensor Absence test consists of disconect or change the wire connections of a sensor in hardware, making the result
 obtained from a read from sensor be an absurd value or not be a number. The expected behavior of the system was to identify
 a strange conduct by the sensor and ignore its measure for this cicle of temperature or humidity check. Both tasks were 
-submitted to this test 3 times, each of them with a different sensor being removed or altered. The subsystem's actions 
+submitted to this test three times, each of them with a different sensor being removed or altered. The subsystem's actions 
 were logged and the results were uniform.
 
 Firstly, the subsystem calculates the difference of the values acquired from the sensors from the mean. Then it detect
@@ -406,7 +410,15 @@ On the other hand, if two or more sensors were compromised, the system fails to 
 and outputs a invalid value. This limit can be extended adding more sensors because the way that the subsystem checks for 
 error have the property that the more sensors, more reliable is the system.
 
+\subsubsection{Controlled Sensor}
+This test main goal is to see whether the system is able to detect a valid temperature measure but incorrect. It consists of
+manipulating the sensor measure to valid but incorrect values and monitor the system behavior step by step. The test was 
+repeated three times, each of them with a different sensor being manipulated. The subsystem had the same behavior as the
+previous test, detecting an fault by computing the difference from the mean.
 
+The subsystem presented a success for all repetitions of the test, being able to deal with one sensor failure in each
+iteration. And as expected, the subsystem fails to provide a reliable measure when two or more sensors present an 
+misleading measure.
 
 \section{Conclusion}
 
