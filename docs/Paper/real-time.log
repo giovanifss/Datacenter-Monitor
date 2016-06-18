@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Arch Linux) (preloaded format=pdflatex 2016.2.16)  17 JUN 2016 23:10
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Arch Linux) (preloaded format=pdflatex 2016.2.16)  17 JUN 2016 23:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -847,7 +847,7 @@ File: ot1phv.fd 2001/06/04 scalable font definitions for OT1/phv.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <10> not available
 (Font)              Font shape `OT1/phv/b/n' tried instead on input line 74.
 
-Underfull \vbox (badness 1237) has occurred while \output is active []
+Underfull \vbox (badness 6995) has occurred while \output is active []
 
  [1
 
@@ -865,7 +865,7 @@ LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
 Here is how much of TeX's memory you used:
  14580 strings out of 493054
  276070 string characters out of 6140586
- 330414 words of memory out of 5000000
+ 330386 words of memory out of 5000000
  17796 multiletter control sequences out of 15000+600000
  25894 words of font info for 52 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -883,7 +883,7 @@ fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/type1/urw
 usr/share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texmf-dist/f
 onts/type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/ut
 mri8a.pfb>
-Output written on real-time.pdf (8 pages, 156171 bytes).
+Output written on real-time.pdf (8 pages, 155789 bytes).
 PDF statistics:
  91 PDF objects out of 1000 (max. 8388607)
  66 compressed objects within 1 object stream
