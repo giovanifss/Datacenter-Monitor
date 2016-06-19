@@ -1,6 +1,15 @@
+#include <Arduino.h>
 #include <NilRTOS.h>
 #include <NilSerial.h>
 #include <DHT.h>
+void setup();
+void loop();
+float get_fault_free_value(float values[]);
+void beep(unsigned char interval);
+#line 1 "src/main.ino"
+//#include <NilRTOS.h>
+//#include <NilSerial.h>
+//#include <DHT.h>
 
 //-----------------------------------------------------------------------------------------------------------------------------
 
@@ -33,7 +42,7 @@
  * This is to allow system to print extra informations
  * Allowing the user to see what is going on behind the scenes
  */
-//#define DEBUG_RTDMS         // Uncomment this line to activate DEBUG
+#define DEBUG_RTDMS         // Uncomment this line to activate DEBUG
 
 //-----------------------------------------------------------------------------------------------------------------------------
 
@@ -42,6 +51,7 @@
  */
 
 #define Serial NilSerial    // NilSerial is lighter than Serial
+SEMAPHORE_DECL(sem, 0);     // Declare a semaphore with an inital counter value of zero.
 
 //-----------------------------------------------------------------------------------------------------------------------------
 
@@ -115,10 +125,8 @@ NIL_WORKING_AREA(waThread1, 0);
 NIL_THREAD(Thread1, arg)
 {
     while (TRUE) {
+        nilSemWait(&sem);       // Waits to execute when activated
         beep(ALERT_DELAY);
-
-        // Just to test the other tasks
-        nilThdSleepMilliseconds(1000);
     }
 }
 
