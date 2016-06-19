@@ -50,8 +50,8 @@ of the conditions of the room and ensuring that at any signal of danger, the res
 
 A data center is a facility used to accommodate computer systems and associated components, such as telecommunications, 
 network devices and storage systems. It usually includes redundant or backup  power supplies, redundant data communications 
-connections, air conditioning, fire suppression and security devices. The data center is maintained by an organization for 
-the purpose of handling the data necessary for its operations \cite{janpitak2011data} \cite{hassan2013temperature}.
+connections, air conditioning, fire suppression and security devices\cite{janpitak2011data} \cite{hassan2013temperature}. 
+%The data center is maintained by an organization for the purpose of handling the data necessary for its operations 
 
 Because of technology compaction, the information technology (IT) industry has experienced a large decrease
 in the floor space required to achieve a constant quantity of computing and storage capability. However, 
@@ -62,8 +62,17 @@ comprise several hundred to several thousand microprocessors. The cooling of com
 equipment rooms has thus become a major challenge \cite{schmidt2005challenges}.
 
 In this scenario of challenges, the availability of the data center must be preserved. It is a critical part to keep business 
-running smoothly and continuously. A downtime can be costly resulting in production and business losses so that a non-stopped 
-service or 24x7 availability requirement is needed. Although differences of opinion still exist in how to handle a data center, 
+running smoothly and continuously and a downtime can be costly resulting in production and business losses. To assure the 
+availability, a critical element that must be present in any control system is a way to warn that something is going wrong 
+inside the room. It is an importante task that must occur as quickly as possible, increasing the risk of loosing data or 
+equipments at every second of delay. This paper focus in proof that is possible to use a real time system to monitor the 
+basic conditions of the data center. This work is divided in 5 sections. The second section conceptualizes important elements. 
+The third explains and present the RTDMS - Real Time Data Center Monitor System -, exposing its task model, proofing the 
+scalability and describing the fault tolerance subsystem. The section four presents the results obtained in tests and 
+experiments and the last talk about the conclusions retrieved from this work.
+
+\iffalse
+Although differences of opinion still exist in how to handle a data center, 
 there is an agreement that the data center mainly requires protection of computer equipment and personnel to avoid troubles
 from the potential hazards which may occur and impact the availability. The following table presents the difference
 of opinion for the most known vendors about the temperature of the data center \cite{ashrae9} \cite{moss2011data} 
@@ -84,15 +93,7 @@ Oracle & 21/70           & 23/74           & 22/72         \\ \hline
 \end{tabular}
 \end{table}
 
-To assure the availability, a critical element that must be present in any control system is a way to warn that something is 
-going wrong inside the room. It is an importante task that must occur as quickly as possible, increasing the risk of loosing
-data or equipments every second of delay. This paper focus in proof that is possible to use a real time system to monitor the
-data center and warn at any signal of trouble.
-
-To achieve this result, this work is divided in 5 sections. The second section conceptualizes important elements for the proof. 
-The third explains and present the RTDMS - Real Time Data Center Monitor System -, exposing its task model, proofing the 
-scalability and describing the hardware requirements and configurations. The section four presents the results obtained in
-tests and experiments and the fifth section talk about the conclusions retrieved from this work.
+\fi
 
 \iffalse
 The technology advances with servers and networking equipment enables the equipment that filled a room, can now be placed 

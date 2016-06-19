@@ -1,10 +1,5 @@
 \begin{thebibliography}{}
 
-\bibitem[ASHRAE 2008]{ashrae9}
-ASHRAE, T. (2008).
-\newblock 9.9, 2008.
-\newblock {\em ASHRAE Environmental Guidelines for Datacom Equipment}.
-
 \bibitem[Chodrow et~al. 1991]{chodrow1991run}
 Chodrow, S.~E., Jahanian, F., and Donner, M. (1991).
 \newblock Run-time monitoring of real-time systems.
@@ -38,21 +33,6 @@ Liu, C.~L. and Layland, J.~W. (1973).
 \newblock Scheduling algorithms for multiprogramming in a hard-real-time
   environment.
 \newblock {\em Journal of the ACM (JACM)}, 20(1):46--61.
-
-\bibitem[Moss 2009]{moss2009data}
-Moss, D. (2009).
-\newblock Data center operating temperature: What does dell recommend?
-
-\bibitem[Moss 2011]{moss2011data}
-Moss, D.~L. (2011).
-\newblock Data center operating temperature: the sweet spot.
-\newblock {\em A Dell Technical White Paper. Round Rock, Texas}.
-
-\bibitem[Packard 2013]{packard2013applying}
-Packard, H. (2013).
-\newblock Applying 2011 ashrae data center guidelines to hp proliant-based
-  facilities copyright{\copyright} 2012.
-\newblock {\em Consulta: Octubre}.
 
 \bibitem[Schmidt et~al. 2005]{schmidt2005challenges}
 Schmidt, R.~R., Cruz, E., and Iyengar, M.~K. (2005).
