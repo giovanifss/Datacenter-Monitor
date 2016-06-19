@@ -13,7 +13,7 @@
  * 
  * If a higher temperature is detected, the system will alert the problem
  */
-#define TMP_LIMIT 25        // The limit of temperature, if its above, the system will alert
+#define TMP_LIMIT 27        // The limit of temperature, if its above, the system will alert
 
 /*
  * This is the limit of humidity
@@ -42,7 +42,7 @@
  */
 
 #define Serial NilSerial    // NilSerial is lighter than Serial
-SEMAPHORE_DECL(sem, 0);     // Declare a semaphore with an inital counter value of zero.
+SEMAPHORE_DECL(sem, 0);   // Semaphore to allow other threads to run and signal alert
 
 //-----------------------------------------------------------------------------------------------------------------------------
 
@@ -115,8 +115,13 @@ NIL_WORKING_AREA(waThread1, 0);
 // Thread function for Alert Task
 NIL_THREAD(Thread1, arg)
 {
+    nilSemWait(&sem);           // Waits to execute when activated
+
     while (TRUE) {
-        nilSemWait(&sem);       // Waits to execute when activated
+        #ifdef DEBUG_RTDMS
+            Serial.println("Alert executing");
+        #endif
+
         beep(ALERT_DELAY);
     }
 }
@@ -160,7 +165,7 @@ NIL_THREAD(Thread2, arg)
         }
 
         if (get_fault_free_value(temps) >= TMP_LIMIT) {
-            Serial.println("Temp alert"); 
+            nilSemSignal(&sem);         // Signal to alert thread to execute
         }
 
         time = millis() - time;
@@ -192,6 +197,8 @@ NIL_WORKING_AREA(waThread3, 384);
 NIL_THREAD(Thread3, arg)
 {
     while (TRUE) {
+        //nilSemWait(&alert);         // When alert is running, this thread is blocked
+
         int time = millis();
 
         float hmdts[QTD_SENSORS];   // To store the humidities readed by the sensors
@@ -214,7 +221,7 @@ NIL_THREAD(Thread3, arg)
         }
 
         if (get_fault_free_value(hmdts) >= HMD_LIMIT) {
-            Serial.println("Humd alert"); 
+            nilSemSignal(&sem);         // Signal to alert thread to execute
         }
 
         time = millis() - time;
@@ -242,10 +249,12 @@ NIL_WORKING_AREA(waThread4, 384);
 NIL_THREAD(Thread4, arg)
 {
     while (TRUE) {
+        //nilSemWait(&alert);         // When alert is running, this thread is blocked
+
         int time = millis();
 
         if (analogRead(FLOOD_PIN) < WATER_LIMIT){
-            Serial.println("Flood detected!");
+            nilSemSignal(&sem);     // Signal to alert thread to execute
         } 
         #ifdef DEBUG_RTDMS
         else {
