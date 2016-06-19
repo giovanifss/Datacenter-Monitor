@@ -42,7 +42,7 @@ Data center is a critical part to keep business running smoothly and continuousl
 have 24x7 availability. Assure the availability is a hard problem and requires a lot of effort and study, but keep the 
 personnel updated about the conditions of the room is a good start and is crucial to avoid worst problems. This paper aims 
 to proof that a real time system can solve the warning time problem of the data center, bringing reliability to measurement 
-% of the conditions of the room and ensuring that at any signal of danger, the responsible for the data center will be alerted.
+of the conditions of the room and ensuring that at any signal of danger, the responsible for the data center will be alerted.
 \end{abstract}
 
 
@@ -292,6 +292,25 @@ and \(n\) is the number of processes to be scheduled. The set of tasks for RTDMS
 
 \[ U = 0.7600 \leq 0.7797 \]
 
+\subsection{Fault Tolerance}
+
+The RTDMS provides a tolerance for sensors fault, being able to deal with \(\frac{1}{3}\) of sensors failing at the same
+time. The fault tolerance subsystem behave in the following way:
+\begin{itemize}
+ \item Let \(s_0, s_1, ... , s_n\) be sensors for either temperature or humidity. The system takes as premise that at 
+ least \(50\% + 1\) sensors will measure the correct temperature;
+ \item After compute the basic mean \(\frac{s_0, s_1, ... , s_n}{n}\), the system checks for the absolute difference \(d\) for
+ each sensor \(i\) from the mean: \(d_i = |s_i - mean|\);
+ \item Then, after check for values outside the margin of error acceptable, i.e. \(d_i > acceptable\ value\), the system 
+ disregards measurements that does not respect the limit, these sensors disregards are represented by \(q\);
+ \item If a measurement is disregards, i.e. \(q > 0\), the system recomputes the mean for the realiable values and outputs it as the final
+ temperature: \(\frac{s_x, s_y, ... , s_z}{n - q}\).
+\end{itemize}
+
+This behavior provides a tolerance for absence of sensor (disconnected or not working) and for fault in read (measuring an
+absurd value that is not aligned with the real temperature). Further, it still support the variance in read that sensors
+have when measuring, accepting values that are in the tolerable range of mistake.
+
 \subsection{System's Flow}
 The system follows a flow that aims to provide the maximum of autonomy to the task with hardest deadline, executing
 it with total hardware control to ensure that the deadline will be fulfilled. The flow can be seen in the following
@@ -422,6 +441,17 @@ iteration. And as expected, the subsystem fails to provide a reliable measure wh
 misleading measure.
 
 \section{Conclusion}
+
+This paper proves that a real time system can be used to monitor the basic conditions of a data center and reduce the warning
+time of any danger inside the room. Consisting of a set of tasks mathematically schedulable - and reaching success in scheduling 
+simulator tests - alongside of a fault tolerance subsystem, the system is able to check for basic adversities in a realiable 
+way, solid and efficient. On the other hand, a data center monitor system to real world implementation must be aware of more 
+conditions beyond temperature, humidity and water flood. A complete system must provide treatment for airflow heat, fire 
+control and power management, being able to operate in different energy consumption policies.
+
+Although this paper proves that a real time system can be used for monitor the basic conditions of a data center, more 
+work is needed to develop a full system able to deal with all potential hazards. These hazards are outside of the scope of this 
+paper and are a good start point for future works in this topic. 
 
 \bibliographystyle{sbc}
 \bibliography{real-time}

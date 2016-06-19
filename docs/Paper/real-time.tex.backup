@@ -24,7 +24,7 @@
      
 \sloppy
 
-\title{Instructions for Authors of SBC Conferences\\ Papers and Abstracts}
+\title{A Real Time Datacenter Monitor System}
 
 \author{Giovani Ferreira\inst{1}, Gustavo Coimbra\inst{1}, Eduardo San\inst{1} }
 
@@ -38,10 +38,11 @@
 \maketitle
 
 \begin{abstract}
-Data center, a facility used to accommodate computer systems and associated components and a critical part to keep business
-running smoothly and continuously, needs to be a non-stopped service or have 24x7 availability because a downtime can cause
-several losses. It's crucial to know everything that is going on inside the data center and be alerted at any signal of danger.
-For this purpose, this paper aims to proof that a real time system can solve the warning time problem of the data center.
+Data center is a critical part to keep business running smoothly and continuously, needing to be a non-stopped service or 
+have 24x7 availability. Assure the availability is a hard problem and requires a lot of effort and study, but keep the 
+personnel updated about the conditions of the room is a good start and is crucial to avoid worst problems. This paper aims 
+to proof that a real time system can solve the warning time problem of the data center, bringing reliability to measurement 
+of the conditions of the room and ensuring that at any signal of danger, the responsible for the data center will be alerted.
 \end{abstract}
 
 
@@ -421,6 +422,17 @@ iteration. And as expected, the subsystem fails to provide a reliable measure wh
 misleading measure.
 
 \section{Conclusion}
+
+This paper proves that a real time system can be used to monitor the basic conditions of a data center and reduce the warning
+time of any danger inside the room. Consisting of a set of tasks mathematically schedulable - and reaching success in scheduling 
+simulator tests - alongside of a fault tolerance subsystem, the system is able to check for basic adversities in a realiable 
+way, solid and efficient. On the other hand, a data center monitor system to real world implementation must be aware of more 
+conditions beyond temperature, humidity and water flood. A complete system must provide treatment for airflow heat, fire 
+control and power management, being able to operate in different energy consumption policies.
+
+Although this paper proves that a real time system can be used for monitor the basic conditions of a data center, more 
+work is needed to develop a full system able to deal with all potential hazards. These hazards are outside of the scope of this 
+paper and are a good start point for future works in this topic. 
 
 \bibliographystyle{sbc}
 \bibliography{real-time}
