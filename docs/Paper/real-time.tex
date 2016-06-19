@@ -167,9 +167,9 @@ temporal behavior under all specified load and fault conditions, it is permissib
 deadline occasionally \cite{kopetz2011real}. \cite{stankovic1996real} also points that hard real-time systems 
 usually cause several consequences, even death, when missed an important deadline.
 
-A computation of a real-time system can be viewed as a sequence of event occurrences. Informally, 
-events represent things that happen in a system. An event occurrence defines a point in time in a
-computation at which a particular instance of an event happens \cite{chodrow1991run}.
+%A computation of a real-time system can be viewed as a sequence of event occurrences. Informally, 
+%events represent things that happen in a system. An event occurrence defines a point in time in a
+%computation at which a particular instance of an event happens \cite{chodrow1991run}.
 
 \subsection{Tasks}
 
@@ -417,10 +417,9 @@ temperature tasks were submitted to two different tests:
 
 \subsubsection{Sensor Absence}
 The Sensor Absence test consists of disconect or change the wire connections of a sensor in hardware, making the result
-obtained from a read from sensor be an absurd value or not be a number. The expected behavior of the system was to identify
-a strange conduct by the sensor and ignore its measure for this cicle of temperature or humidity check. Both tasks were 
-submitted to this test three times, each of them with a different sensor being removed or altered. The subsystem's actions 
-were logged and the results were uniform.
+obtained from a read from sensor be an absurd value or not be a number. The expected behavior of the system is to identify
+a strange conduct and ignore sensor's measurement for this cicle of temperature or humidity check. Both tasks were 
+submitted to this test three times, each of them with a different sensor being removed or altered. The behavior is:
 
 Firstly, the subsystem calculates the difference of the values acquired from the sensors from the mean. Then it detect
 that one sensor have a bigger difference than others. After check that this difference is beyond of the acceptable limit,
@@ -433,9 +432,9 @@ error have the property that the more sensors, more reliable is the system.
 
 \subsubsection{Controlled Sensor}
 This test main goal is to see whether the system is able to detect a valid temperature measure but incorrect. It consists of
-manipulating the sensor measure to valid but incorrect values and monitor the system behavior step by step. The test was 
-repeated three times, each of them with a different sensor being manipulated. The subsystem had the same behavior as the
-previous test, detecting an fault by computing the difference from the mean.
+manipulating the sensor measure to valid but incorrect values and monitor the system behavior. The test was repeated three 
+times, each of them with a different sensor being manipulated. The subsystem had the same behavior as the previous test, 
+detecting an fault by computing the difference from the mean.
 
 The subsystem presented a success for all repetitions of the test, being able to deal with one sensor failure in each
 iteration. And as expected, the subsystem fails to provide a reliable measure when two or more sensors present an 
